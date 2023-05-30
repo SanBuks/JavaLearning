@@ -12,16 +12,17 @@ public class TestUser {
 
     @Test
     public void testUser() {
-        // doc4j 加载解析 xml, 获取 id, class 属性值
+        // 1. doc4j 加载解析 xml, 获取 id, class 属性值, 生成 Map<String, BeanDefinition> beanDefinitionMap;
+        // 2. 通过 BeanDefinitionReader 将 BeanDefinition 加载到 IOC 容器, 可以进行额外修改
+        // 3. IOC 中: BeanFactory + Reflection 实例化对象
+        // 4. IOC 中: 初始化后生成对象
         ApplicationContext app = new ClassPathXmlApplicationContext("bean.xml");
-        // 反射创建对象, 放入 bean 容器 即 DefaultListableBeanFactory 中 Map<String, BeanDefinition> beanDefinitionMap;
-        // BeanDefinition 包含 bean 的信息
         User user = (User) app.getBean("user");
         System.out.println(user);
         user.print();
     }
 
-    // 模拟反射过程
+    // 反射过程
     @Test
     public void testReflection() throws Exception {
         // 加载解析 xml, 获取 id, class 属性值

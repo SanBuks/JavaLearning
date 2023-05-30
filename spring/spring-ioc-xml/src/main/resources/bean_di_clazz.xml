@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="clazz" class="com.learn.spring.ioc.di.clazz.Department" >
+        <property name="name" value="Department"/>
+    </bean>
+
+    <bean id="user_out" class="com.learn.spring.ioc.di.clazz.User">
+        <property name="id" value="123"/>
+        <property name="name" value="user_name"/>
+        <property name="department" ref="clazz" />
+    </bean>
+
+    <bean id="user_in" class="com.learn.spring.ioc.di.clazz.User">
+        <property name="id" value="123"/>
+        <property name="name" value="user_name"/>
+        <property name="department">
+            <bean class="com.learn.spring.ioc.di.clazz.Department">
+                <property name="name" value="DepartmentInner"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="user_cascade" class="com.learn.spring.ioc.di.clazz.User">
+        <property name="id" value="123"/>
+        <property name="name" value="user_name"/>
+        <property name="department" ref="clazz" />
+        <property name="department.name" value="DepartmentCascade"/>
+    </bean>
+</beans>

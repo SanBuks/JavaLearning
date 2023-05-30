@@ -8,7 +8,7 @@
 - AOP：面向切面编程，封装多个类的公共行为，将那些与业务无关，却为业务模块所共同调用的逻辑封装起来，减少系统的重复代码，降低模块间的耦合度。另外，AOP 还解决一些系统层面上的问题，比如日志、事务、权限等
 
 ## Spring 特点
-- 非侵入式：使用 Spring Framework 开发应用程序时，Spring 对应用程序本身的结构影响非常小。对领域模型可以做到零污染；对功能性组件也只需要使用几个简单的注解进行标记，完全不会破坏原有结构，反而能将组件结构进一步简化。这就使得基于 Spring Framework 开发应用程序时结构清晰、简洁优雅。
+- 非侵入式：使用 Spring Framework 开发应用程序时，Spring 对应用程序本身的结构影响非常小。对领域模型可以做到零污染；对功能性组件也只需要使用几个简单的注解进行标记，完全不会破坏原有结构，反而能将组件结构进一步简化。
 - 控制反转
 - 面向切面编程
 - 容器：Spring IoC 是一个容器，因为它包含并且管理组件对象的生命周期。组件享受到了容器化的管理，替程序员屏蔽了组件创建过程中的大量细节，极大的降低了使用门槛，大幅度提高了开发效率
@@ -75,21 +75,22 @@ spring core提供了IOC,DI,Bean配置装载创建的核心实现。核心概念�
     <bean id="user" class="com.learn.spring.User"> </bean>
 </beans>
 ```
-## 获取 bean
+## 获取 bean 过程
 ```java
 public class TestUser {
     @Test
     public void testUser() {
-        // doc4j 加载解析 xml, 获取 id, class 属性值
+        // 1. doc4j 加载解析 xml, 获取 id, class 属性值, 生成 Map<String, BeanDefinition> beanDefinitionMap;
+        // 2. 通过 BeanDefinitionReader 将 BeanDefinition 加载到 IOC 容器, 可以进行额外修改
+        // 3. IOC 中: BeanFactory + Reflection 实例化对象
+        // 4. IOC 中: 初始化后生成对象
         ApplicationContext app = new ClassPathXmlApplicationContext("bean.xml");
-        // 反射创建对象, 放入 bean 容器 即 DefaultListableBeanFactory 中 Map<String, BeanDefinition> beanDefinitionMap;
-        // BeanDefinition 包含 bean 的信息
         User user = (User) app.getBean("user");
         System.out.println(user);
         user.print();
     }
 
-    // 模拟反射过程
+    // 反射过程
     @Test
     public void testReflection() throws Exception {
         // 加载解析 xml, 获取 id, class 属性值
@@ -179,4 +180,91 @@ public void testLog4j() {
 # 3. IOC 容器
 ## 3.1 概念
 - IOC 容器：管理所有 Java 对象（Spring Bean）的实例化和初始化，控制对象与对象之间的依赖关系，降低耦合
-- DI：实现了控制反转的思想
+- DI：实现了控制反转的思想， 指的是将对象的属性和依赖通过配置方式进行注入， 有 构造注入 和 set 注入
+- DI 实现: ApplicationContext, BeanFactory(内部使用)
+- ApplicationContext 主要通过 ConfigurableApplicationContext 接口实现功能，有多个实现如下
+
+| 类型名                          | 简介                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| ClassPathXmlApplicationContext  | 通过读取类路径下的 XML 格式的配置文件创建 IOC 容器对象       |
+| FileSystemXmlApplicationContext | 通过文件系统路径读取 XML 格式的配置文件创建 IOC 容器对象     |
+| ConfigurableApplicationContext  | ApplicationContext 的子接口，包含一些扩展方法 refresh() 和 close() ，让 ApplicationContext 具有启动、关闭和刷新上下文的能力。 |
+| WebApplicationContext           | 专门为 Web 应用准备，基于 Web 环境创建 IOC 容器对象，并将对象引入存入 ServletContext 域中。 |
+
+## 3.2 XML 管理 Bean
+### 三种方式获取 bean
+```java
+// 1. id 获取 bean
+User user = (User) context.getBean("user");
+user.print();
+
+// 2. class 获取 bean (只能有一个该类型 bean)
+User user2 = (User) context.getBean(User.class);
+user2.print();
+
+// 如果组件类实现了接口，根据接口类型可以获取 bean 吗？
+// 可以，前提是bean唯一
+// 如果一个接口有多个实现类，这些实现类都配置了 bean，根据接口类型可以获取 bean 吗？
+// 不行，因为bean不唯一
+        
+// 3. 两种结合获取 bean
+User user3 = (User) context.getBean("user", User.class);
+user3.print();
+```
+
+### 两种注入的配置
+```xml
+<!-- set 注入，注意加上默认构造函数-->
+<bean id="user_set" class="User">
+    <!-- value 值默认为字面量 -->
+    <property name="id" value="123"/>
+    <property name="name" value="user_name"/>
+</bean>
+
+<!-- ctor 注入，注意加上有参构造函数-->
+<bean id="user_ctor" class="User">
+    <constructor-arg name="id" value="321"/>             <!-- 属性名方式 -->
+    <constructor-arg index="1" value="user_ctor_name"/>  <!-- 属性下标方式 -->
+</bean>
+```
+
+### 特殊值处理
+- null 值 `<property name="name"> <null /> </property>`
+- xml 实体 `<property name="expression" value="a &lt; b"/>`
+- CDATA 节 `<property name="expression"> <value><![CDATA[a < b]]></value> </property>`
+
+### 自定义类型注入
+- 外部 bean 注入
+```xml
+<bean id="user" class="com.learn.spring.ioc.di.clazz.User">
+    <property name="id" value="123"/>
+    <property name="name" value="user_name"/>
+    <property name="department" ref="clazz" />
+</bean>
+```
+
+- 内部 bean 注入
+```xml
+<bean id="user_in" class="com.learn.spring.ioc.di.clazz.User">
+    <property name="id" value="123"/>
+    <property name="name" value="user_name"/>
+    <property name="department">
+        <bean class="com.learn.spring.ioc.di.clazz.Department">
+            <property name="name" value="DepartmentInner"/>
+        </bean>
+    </property>
+</bean>
+```
+
+- 级联 bean 注入
+```xml
+<bean id="user_cascade" class="com.learn.spring.ioc.di.clazz.User">
+    <property name="id" value="123"/>
+    <property name="name" value="user_name"/>
+    <property name="department" ref="clazz" />  <!-- 注意 user 中需要 get 方法-->
+    <property name="department.name" value="DepartmentCascade"/>
+</bean>
+```
+
+### 容器属性注入
+- 
