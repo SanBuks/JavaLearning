@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>引入JS的方式</title>
+</head>
+<body>
+<!-- 1. 行内形式-->
+    <input type="button" value="按钮" onclick="alert('行内形式');">
+<!-- 2. 内部形式 -->
+<script>
+    alert('内部形式');
+</script>
+<!-- 3. 外部形式, 忽略本段 js -->
+<script src="01_include_js.js">
+    alert('被忽略');
+</script>
+
+<!-- 交互 -->
+<script>
+    let num = prompt("提供数值!");
+    document.write(num);
+</script>
+
+</body>
+</html>
+

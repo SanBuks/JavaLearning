@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数组相关</title>
+</head>
+<body>
+<script>
+  let a = [];             // 定义数组
+  console.log(a.length);  // 0
+
+  a[1] = 1;               // 直接下标赋值 增加元素
+  console.log(a.length);  // 2
+  console.log(a[0]);      // undefined
+
+  a.length = 3;           // 修改长度 增加元素
+  console.log(a[2]);      // undefined
+
+  // 函数定义
+  function foo(parm1, parm2) {
+      return parm1 + parm2;
+  }
+  // 函数对象
+  let boo = function (parm1, parm2) { };
+  // 函数的 arguments 对象
+  function too() {
+      if (arguments.length === 0) return;
+      let max = arguments[0];
+      for (let i = 1; i < arguments.length; ++i) {
+          max = max < arguments[i] ? arguments[i] : max;
+      }
+      return max;
+  }
+
+  console.log(foo('test1', 'test2', 'test3')); // "test1test2"     截取数量为止
+  console.log(foo('test1'));                   // "test1undefined" 数量不够取 undefined
+  console.log(boo());                          // "undefined"      调用函数对象
+  console.log(too(1, 2, 3, 4, 5));             // 5                函数的 arguments 对象使用
+</script>
+</body>
+</html>
