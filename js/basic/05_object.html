@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对象</title>
+</head>
+<body>
+<script>
+    // 1. 字面量创建对象
+    let obj1 = {
+        name: "bob",
+        age: 3,
+        action: function() {
+            console.log("hi");
+        }
+    }
+    // 两种访问方式
+    obj1["name"] = "alice";
+    obj1.age = 4;
+    obj1.action();
+
+    // 2. new Object 创建
+    let obj2 = {};
+    obj2.name = "bob";
+    obj2.age = 3;
+    obj2.action = function() {
+        console.log("hi");
+    }
+    obj2.action();
+
+    // 3. 构造函数 创建 (函数名必须首字母大写)
+    function Obj(parm1, parm2, parm3) {
+        this.name = parm1;
+        this.age = parm2;
+        this.action = parm3;
+    }
+    // 执行 new Obj过程：
+    //  1). 创建对象
+    //  2). this 指向对象
+    //  3). 执行函数体, 创建属性
+    //  4). 自动返回对象
+    let obj3 = new Obj("bob", 3, function(){console.log("hi");});
+    obj3.action();
+
+    // 4. for in 语句
+    for(const x in obj3) {
+        console.log(x);       // 打印属性名, x is a String
+        console.log(obj3[x]); // 打印属性值
+    }
+</script>
+</body>
+</html>

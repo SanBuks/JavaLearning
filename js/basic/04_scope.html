@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作用域</title>
+</head>
+<body>
+
+<script>
+
+    var global_var_noraml = 30; // 全局变量
+    function test() {
+        global_var = 20;        // 全局变量
+        var function_var = 30;  // 局部变量
+    }
+    console.log(global_var);    // 函数局部内定义全局变量的特殊情况
+    console.log(function_var);  // error
+
+    // 变量的查找遵循区块嵌套
+
+    // 注意 预解析机制
+    f1();
+    console.log(b);  // b 是 全局函数， 在 f1 中初始化了
+    console.log(c);  // c 是 全局函数， 在 f1 中初始化了
+    console.log(a);  // a 是 局部函数
+    function f1() {
+        var a = b = c = 9;
+        console.log(a);
+        console.log(b);
+        console.log(c);
+    }
+</script>
+
+</body>
+</html>

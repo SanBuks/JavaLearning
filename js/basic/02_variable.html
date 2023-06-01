@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>变量</title>
+</head>
+<body>
+<script>
+    // 作用域:   var 函数或全局 / let 块级
+    // 变量提升: var 存在      / let 不存在
+    // 重复声明: var 存在      / let 不存在
+
+    // 命名规则
+    let _num1 = 3;
+    let $num2 = 3;
+    let Num3 = 3;
+
+    // 弱类型语言
+    //   基础类型 Number Boolean String Null Undefined, Symbol, Bigint
+    //   复杂类型 Object(Function, Array)
+    alert(null);                       // null 是一个表示空值的特殊值,可将变量赋值为 null 来表示该变量的值为空, 是一个 Object
+    var undefined; alert(undefined);   // undefined 表示一个未定义的值, 声明了一个变量但没有对其赋值,那么它的值就是 undefined
+    alert(typeof prompt("输入字符串"));  // string / object
+
+    // 转换
+    console.log(_num1.toString());     // 转字符串
+    console.log(String(_num1));        // 强转字符串
+    console.log(parseInt('123'));      // 转 int
+    console.log(Number('123'));        // 强转 int
+    console.log(Number('xxxx'));       // NaN 是一个特殊的数字类型值, 表示 Not a Number, 用 Number.isNaN() 判断
+
+</script>
+</body>
+</html>
