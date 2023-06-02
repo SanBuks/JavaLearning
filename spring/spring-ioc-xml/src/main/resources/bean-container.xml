@@ -47,13 +47,18 @@
                 <ref bean="user2"/>
             </list>
         </property>
-
     </bean>
 
     <bean id="association" class="com.learn.spring.ioc.di.container.Association">
         <property name="association">
             <map>
-                <entry key-ref="user1" value-ref="user2" />
+                <entry key-ref="user1" value-ref="user2"/>
+                <entry>
+                    <key>
+                        <ref bean="user1"/>
+                    </key>
+                    <ref bean="user2"/>
+                </entry>
             </map>
         </property>
     </bean>
@@ -66,6 +71,10 @@
     <util:map id="map">
         <entry key-ref="user2" value-ref="user1"/>
     </util:map>
+    <util:set id="set">
+        <ref bean="user1"/>
+        <ref bean="user2"/>
+    </util:set>
 
     <bean id="association_container" class="com.learn.spring.ioc.di.container.Association">
         <property name="association" ref="map"/>

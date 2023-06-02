@@ -267,4 +267,163 @@ user3.print();
 ```
 
 ### 容器属性注入
-- 
+- 字符串数组注入
+```xml
+<property name="hobbies">
+    <array>
+        <value>吃饭</value>
+        <value>睡觉</value>
+        <value>写代码</value>
+    </array>
+</property>
+```
+
+- List 容器注入
+```xml
+<property name="emp">
+    <list>
+        <ref bean="user1"/>
+        <ref bean="user2"/>
+    </list>
+</property>
+```
+
+- Map 容器注入
+```xml
+<property name="association">
+    <map>
+        <entry key-ref="user1" value-ref="user2" />
+        <entry>
+            <key> <ref bean="user1"/> </key>
+            <ref bean="user2"/>
+        </entry>
+    </map>
+</property>
+```
+
+- util 集合
+```xml
+<!-- 需要引入 util 命名空间 -->
+<util:list id="list">
+    <ref bean="user1"/>
+    <ref bean="user2"/>
+</util:list>
+
+<util:map id="map">
+    <entry key-ref="user2" value-ref="user1"/>
+</util:map>
+
+<util:set id="set">
+    <ref bean="user1"/>
+    <ref bean="user2"/>
+</util:set>
+```
+
+### P 命名空间
+```xml
+<!-- 需要引入 p 命名空间 -->
+<!-- 格式为 p:attribute_name-ref="container_id" -->
+<bean id="association_p" class="com.learn.spring.ioc.di.container.Association"
+      p:association-ref="map"     
+      p:container-ref="list"/>
+```
+
+### 外部引入
+```xml
+<!-- 需要引入 context 命名空间 -->
+<!-- 引入 resource 下的 jdbc.properties 文件 -->
+<context:property-placeholder location="classpath:jdbc.properties"/>
+
+<!-- 获取格式为 ${jdbc.user} -->
+<bean id="druid_data_source" class="com.alibaba.druid.pool.DruidDataSource">
+    <property name="username" value="${jdbc.user}"/>
+    <property name="password" value="${jdbc.password}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="driverClassName" value="${jdbc.driver}"/>
+</bean>
+```
+
+### bean 作用域
+- singleton（默认）: 在 IOC 容器中始终为单实例, IOC容器初始化时初始化
+- prototype: 在 IOC 容器中有多个实例, 懒初始化
+```xml
+<bean class="xxx" scope="prototype"/>
+<bean class="xxx" scope="singleton"/>
+```
+
+### bean 生命周期
+- 实现 BeanPostProcessor 接口
+```java
+public class UserPostProcess implements BeanPostProcessor {
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println("3.初始化之前输出");
+        System.out.println(beanName + "" + "初始化之前输出" + bean);
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println("5.初始化之后输出");
+        System.out.println(beanName + "" + "初始化之后输出" + bean);
+        return bean;
+    }
+}
+```
+
+- 配置bean
+```xml
+<!-- 设置初始化调用函数和销毁时调用函数, 必须是成员函数 -->
+<bean id="user" class="com.learn.spring.ioc.di.life.User" scope="singleton"
+      init-method="init" destroy-method="destroy" p:name="life"/>
+<!-- 设置初始化前调用函数和初始化后调用函数 -->
+<bean id="process" class="com.learn.spring.ioc.di.life.UserPostProcess"/>
+```
+
+- 流程
+```java
+// 过程
+// 1.bean对象创建（调用无参构造器）
+// 2.给bean对象设置属性
+// 3.bean的后置处理器（初始化之前）
+// 4.bean对象初始化（需在配置bean时指定初始化方法）
+// 5.bean的后置处理器（初始化之后）
+// 6.bean对象就绪可以使用
+// 7.bean对象销毁（需在配置bean时指定销毁方法） 只有 singleton 模式会调用
+// 8.IOC容器关闭
+ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("life.xml");
+User user = context.getBean("user", User.class);
+System.out.println("6. bean 创建完成");
+context.close();
+System.out.println("8. bean 已销毁");
+```
+
+### FactoryBean
+```java
+// 主要用于整合第三方框架, 隐藏配置过程
+// 配置工厂 bean 后获取 bean 实质获取的是 User 本身
+public class MFactoryBean implements FactoryBean<User> {
+    @Override
+    public User getObject() throws Exception {
+        return new User();
+    }
+    @Override
+    public Class<?> getObjectType() {
+        return User.class;
+    }
+}
+```
+
+### 自动装配
+```xml
+<!-- 对应注入的对象实例只能有一个 -->
+<bean id="user_controller" class="com.learn.spring.ioc.di.auto.controller.UserController" autowire="byType"/>
+<bean id="user_service" class="com.learn.spring.ioc.di.auto.service.UserServiceImpl" autowire="byType"/>
+
+<!-- 对应注入的对象名称对应 -->
+<bean id="user_controller" class="com.learn.spring.ioc.di.auto.controller.UserController" autowire="byName"/>
+<bean id="userService" class="com.learn.spring.ioc.di.auto.service.UserServiceImpl" autowire="byName"/>
+<bean id="userDao" class="com.learn.spring.ioc.di.auto.dao.UserDaoImpl"/>
+```
+
+## 3.3 注解管理 Bean

@@ -21,14 +21,14 @@ public class TestUser {
 
     @Test
     public void testSetDI() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("bean_di.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("bean-di.xml");
         User user = (User) context.getBean("user_set", User.class);
         System.out.println(user);
     }
 
     @Test
     public void testCtorDI() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("bean_ctor.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("bean-ctor.xml");
         User user = (User) context.getBean("user_ctor", User.class);
         System.out.println(user);
     }

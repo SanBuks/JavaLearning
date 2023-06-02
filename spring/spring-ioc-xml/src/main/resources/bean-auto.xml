@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 对应注入的对象实例只能有一个 -->
+<!--    <bean id="user_controller" class="com.learn.spring.ioc.di.auto.controller.UserController" autowire="byType"/>-->
+<!--    <bean id="user_service" class="com.learn.spring.ioc.di.auto.service.UserServiceImpl" autowire="byType"/>-->
+
+    <!-- 对应注入的对象名称对应 -->
+    <bean id="user_controller" class="com.learn.spring.ioc.di.auto.controller.UserController" autowire="byName"/>
+    <bean id="userService" class="com.learn.spring.ioc.di.auto.service.UserServiceImpl" autowire="byName"/>
+    <bean id="userDao" class="com.learn.spring.ioc.di.auto.dao.UserDaoImpl"/>
+
+</beans>
