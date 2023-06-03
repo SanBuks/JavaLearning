@@ -1,6 +1,6 @@
 # 1. 基本概念
 ## Spring 定义
-- 广义：Spring Framework 为核心的 Spring 技术栈，Spring Framework、Spring MVC、SpringBoot、Spring Cloud、Spring Data、Spring Security 等，其中 Spring Framework 是其他子项目的基础
+- 广义: Spring Framework 为核心的 Spring 技术栈, 包括Spring Framework、Spring MVC、SpringBoot、Spring Cloud、Spring Data、Spring Security 等, 其中 Spring Framework 是其他子项目的基础
 - 狭义：Spring Framework，是一个分层的、面向切面的 Java 应用程序的一站式轻量级解决方案
 
 ## Spring 核心
@@ -427,3 +427,78 @@ public class MFactoryBean implements FactoryBean<User> {
 ```
 
 ## 3.3 注解管理 Bean
+### 开启组件扫描
+```xml
+<!-- 需要引入 context 命名空间 -->
+
+<!-- 指定排除方式 -->
+<context:component-scan base-package="com.learn.spring.ioc.annotation.bean" use-default-filters="true">
+    <!-- type="annotation"，根据注解排除，expression中设置要排除的注解的全类名 -->
+    <!-- type="assignable"，根据类型排除，expression中设置要排除的类型的全类名 -->
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    <!-- <context:exclude-filter type="assignable" expression="com.atguigu.spring6.controller.UserController"/> -->
+</context:component-scan>
+
+<!-- 指定引入方式 -->
+<context:component-scan base-package="com.learn.spring.ioc.annotation.bean" use-default-filters="false">
+    <!-- type="annotation"，根据注解只选定，expression中设置要只选定的注解的全类名 -->
+    <!-- type="assignable"，根据类型只选定，expression中设置要只选定的类型的全类名 -->
+    <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/> 
+    <!-- <context:include-filter type="assignable" expression="com.atguigu.spring6.controller.UserController"/> -->
+</context:component-scan>
+```
+
+### 三种 bean 注解
+```java
+// 1. 默认 value(id) 为 类名小写
+// 2. 默认 required  为 true 表示需要注入的对象必须存在
+@Component(value="user") 
+//@Controller   controller 层
+//@Service      service 层
+//@Repository   dao 层
+public class User {
+    public void print() {
+        System.out.println("user");
+    }
+}
+```
+
+### @Autowired 多种注入方式
+```java
+// @Autowired 默认根据类型进行匹配, 需要通过 @Qualifier 进行过滤名称
+
+// set 方法注入
+@Autowired
+public void setUserDao();
+
+// 字段注入
+@Autowired
+private UserService userService;
+
+// 构造方法注入
+@Autowired
+public UserController(UserService userService) {
+    this.userService = userService;
+}
+
+// 形参注入/单参构造可无注解
+public UserController(/*@Autowired*/ UserService userService) {
+    this.userService = userService;
+}
+
+// 通过限定 bean 名称解决多个类形注入问题
+@Autowired
+@Qualifier(value="anotherUserDaoImpl")
+public void setUserDao(UserDao userDao) {
+    this.userDao = userDao;
+}
+```
+
+### @Resource 注入
+```java
+// 1. @Resource 只能注解在 field 和 set 方法上
+// 2. @Resource 默认以 byName 方式查找 bean, 找不到则通过 byType 查找
+// 3. @Resource 通过 value 属性指定 bean 名称, 如果省略则以字段名作为名称查找
+```
+
+### 全注解开发

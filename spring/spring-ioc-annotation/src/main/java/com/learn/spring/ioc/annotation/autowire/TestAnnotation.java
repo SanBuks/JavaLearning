@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class TestMVC {
+public class TestAnnotation {
     @Test
     void testMvc() {
-        ApplicationContext app = new ClassPathXmlApplicationContext("bean-auto.xml");
-        UserController userController = (UserController) app.getBean("user_controller");
+        ApplicationContext app = new ClassPathXmlApplicationContext("autowire.xml");
+        UserController userController = (UserController) app.getBean("userController");
         userController.print();
     }
 }
