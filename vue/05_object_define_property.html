@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script type="text/javascript" src="js/vue.js"></script>
+<body>
+<div id="root">
+</div>
+
+<script type="text/javascript">
+    let txt = "abc"
+    let obj = {
+    }
+    // 通过 Object defineProperty 设定动态属性
+    // 同时配置 set, get 函数来显示可能改变的对象属性
+    Object.defineProperty(obj, 'name', {
+        // value: 'text',      // 属性值
+        // enumerable: true,   // 可枚举
+        // writable: true,     // 可写
+        // configurable: true, // 可以被删除
+        get() {                // 读取 name 时, 调用 get 函数
+            return txt
+        },
+        set(value) {
+            txt = value
+        }
+    })
+    txt = "efg"
+    console.log(obj)          // 获取 name 时自动调用 get
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script type="text/javascript" src="js/vue.js"></script>
+<body>
+<div id="root">
+    <!-- 对象属性 -->
+    <h1>{{$children}}</h1>
+    <label>
+        输入数据
+        <input id="input1" type="text" v-bind:value="name"/>
+        <input id="input2" type="text" v-model:value="name"/>
+        <input id="input3" type="text" v-model="name"/>
+    </label>
+</div>
+
+<script type="text/javascript">
+  const x = new Vue({
+    // el: "#root",
+    // data: {
+    //   name: "text",
+    // }
+
+    // 函数式绑定 data
+    // data() {                   // 简写方式
+    data: function(){             // 如果用 lambda 则 this 是 window 实例
+        console.log('@@@', this)  // this 是 vue 实例
+        return {
+            name: "text"
+        }
+      }
+  })
+  // 通过 vue 对象的原型的 函数属性 挂载 在容器
+  setTimeout(() => {
+      x.$mount("#root")
+  }, 1000)
+</script>
+</body>
+</html>

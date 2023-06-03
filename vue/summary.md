@@ -1,0 +1,8 @@
+- 特点: 
+  - 组件式编码
+  - 声明式编码
+  - 虚拟DOM+diff
+- MVVM:
+  - model: js-object (data)
+  - view: model (template)
+  - view-model: vue-object (data-binding, dom-listener)

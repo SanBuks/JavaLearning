@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script type="text/javascript" src="js/vue.js"></script>
+<body>
+<div id="root">
+</div>
+
+<script type="text/javascript">
+    let obj1 = { x: 1}
+    let obj2 = { x: 2}
+
+    // obj2 代理了 obj1 的 x 属性
+    Object.defineProperty(obj2, 'x', {
+        get(){
+            return obj1.x
+        },
+        set(value) {
+            obj1.x = value
+        }
+    })
+
+    obj2.x = 3
+    console.log(obj1.x)
+
+    new Vue({
+        el: "#root",
+        data: {            // Vue 对象中 _data 数据劫持了 data
+            name: "text",  // Vue 为了开发方便 将 _data 中的属性通过代理的方式可以直接在 Vue 实例中访问
+        }
+    })
+</script>
+</body>
+</html>
