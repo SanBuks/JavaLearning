@@ -502,3 +502,98 @@ public void setUserDao(UserDao userDao) {
 ```
 
 ### 全注解开发
+
+
+# 4. AOP
+## 4.1 代理模式 
+### 静态代理 与 AOP 术语
+```java
+// [横切关注点]： 同一类分散的业务问题, 现在关注的是 业务前后的日志打印
+
+// [切面]: 封装通知方法的类
+public class CalculatorStaticProxy implements ICalculator {
+    // [代理对象]
+    private final Calculator calculator;
+
+    public CalculatorStaticProxy(Calculator calculator) {
+        this.calculator = calculator;
+    }
+
+    // [环绕通知]
+    @Override
+    public int add(int lhs, int rhs) {
+        // [前置通知] [连接点]处于业务之前
+        PreBusiness(lhs, rhs);
+        // 核心业务
+        int ans = -1;
+        try{
+            ans = calculator.add(lhs, rhs);
+            // [返回通知] [连接点]处于业务结束
+            System.out.println("success!");
+        } catch (Exception exception) {
+            // [异常通知] [连接点]处于业务异常
+            System.out.println("error");
+        } finally {
+            // [后置通知] [连接点]处于业务之后
+            System.out.println("lhs + rhs = " + ans);
+        }
+        return ans;
+    }
+
+    // 通过找到函数即可找到连接点则 这个函数可称为[切入点]
+    // [切入点] 即是 寻找连接点的方式
+    void PreBusiness(int lhs, int rhs) {
+        System.out.println("(lhs, rhs): " + lhs + ", " + rhs);
+    }
+
+    @Override
+    public int sub(int lhs, int rhs) {
+        System.out.println("(lhs, rhs): " + lhs + ", " + rhs);
+        int ans = calculator.sub(lhs, rhs);
+        System.out.println("lhs - rhs = " + ans);
+        return ans;
+    }
+}
+```
+
+### 动态代理
+```java
+// JDK 动态代理处理有接口的目标类, 动态代理动态生成的代理类会在com.sun.proxy包下, 类名为$proxy1, 和目标类实现相同的接口
+public class CalculatorDynamicProxyFactory {
+    // 需要代理的实体类
+    private final Object target;
+    public CalculatorDynamicProxyFactory(Object target) {
+        this.target = target;
+    }
+
+    Object getProxy() {
+        ClassLoader classLoader = target.getClass().getClassLoader();  // 获取类加载器
+        Class<?>[] classInterface = target.getClass().getInterfaces(); // 获取类接口
+        // 设置代理接口类
+        InvocationHandler invocationHandler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                System.out.println("[dynamic proxy]: method name = " + method.getName());
+                Object result = method.invoke(target, args);
+                System.out.println("[dynamic proxy]: result = " + result);
+                return result;
+            }
+        };
+        // 返回代理实体的对象
+        return Proxy.newProxyInstance(classLoader, classInterface, invocationHandler);
+    }
+}
+
+public class TestCalculator {
+    @Test
+    void testDynamicProxyCalculator(){
+        CalculatorDynamicProxyFactory dynamicProxyFactory = new CalculatorDynamicProxyFactory(new Calculator());
+        ICalculator calc = (ICalculator) dynamicProxyFactory.getProxy();
+        calc.add(1, 2);
+    }
+}
+
+// cglib 动态代理通过继承处理没有接口的目标类 生成的代理类会和目标在在相同的包下, 会继承目标类
+// AspectJ 本质上是静态代理, 将代理逻辑“织入”被代理的目标类编译得到的字节码文件, 所以最终效果是动态的, weaver 就是织入器
+```
+
