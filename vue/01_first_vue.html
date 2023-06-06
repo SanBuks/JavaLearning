@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>插值语法</title>
+  <meta charset="UTF-8">
+  <title>插值语法</title>
 </head>
 <script type="text/javascript" src="js/vue.js"></script>
 <body>
 <div id="root">
-    <!--- 插值语法, 可以运用 JS 表达式 -->
-    <h1>{{name.toUpperCase()}}, {{Date.now()}}</h1>
+  <!--- 插值语法, 可以运用 JS 表达式 -->
+  <h1>{{name.toUpperCase()}}, {{Date.now()}}</h1>
 </div>
 <script type="text/javascript">
-    Vue.config.productionTip = false // 阻止提示
-    new Vue({                        // 如果不使用 new 关键字调用构造函数, this 指向全局变量, 属性会被构造在全局对象中
-        el: "#root",                 // vue 实例绑定容器 root, 两者必须一一对应
-        data: {                      // data 存储数据, 供绑定容器插值使用
-            name: "sss",
-            age: 10
-        }
-    })
+  Vue.config.productionTip = false; // 阻止提示
+  new Vue({                        // 如果不使用 new 关键字调用构造函数, this 指向全局变量, 属性会被构造在全局对象中
+    el: '#root',                 // vue 实例绑定容器 root, 两者必须一一对应
+    data: {                      // data 存储数据, 供绑定容器插值使用
+      name: 'sss',
+      age: 10,
+    },
+  });
 </script>
 </body>
 </html>
