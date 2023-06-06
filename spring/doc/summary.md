@@ -502,7 +502,12 @@ public void setUserDao(UserDao userDao) {
 ```
 
 ### 全注解开发
-
+```java
+@Configuration // 配置类
+//@ComponentScan({"com.xxx.spring.controller", "com.xxx.spring6.service","com.xxx.spring6.dao"})
+@ComponentScan("com.xxx.spring6") // 扫描包路径
+public class SpringConfig {}
+```
 
 # 4. AOP
 ## 4.1 代理模式 
@@ -540,7 +545,7 @@ public class CalculatorStaticProxy implements ICalculator {
         return ans;
     }
 
-    // 通过找到函数即可找到连接点则 这个函数可称为[切入点]
+    // 通过找到函数即可找到连接点则 可以访问获取这个函数的对象可称为[切入点]
     // [切入点] 即是 寻找连接点的方式
     void PreBusiness(int lhs, int rhs) {
         System.out.println("(lhs, rhs): " + lhs + ", " + rhs);
@@ -597,3 +602,163 @@ public class TestCalculator {
 // AspectJ 本质上是静态代理, 将代理逻辑“织入”被代理的目标类编译得到的字节码文件, 所以最终效果是动态的, weaver 就是织入器
 ```
 
+## 4.2 注解 AOP
+### 引入依赖
+```xml
+<!--spring aop依赖-->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aop</artifactId>
+    <version>6.0.2</version>
+</dependency>
+<!--spring aspects依赖-->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aspects</artifactId>
+    <version>6.0.2</version>
+</dependency>
+```
+
+### 配置
+```java
+@Configuration
+@ComponentScan(value="com.learn.spring.aop.annotation")
+@EnableAspectJAutoProxy  // 配置自动扫描切面类
+public class AopConfig {
+}
+```
+
+### 切面表达式, 切入点与优先级
+```java
+@Aspect
+@Component
+public class LogAspect {
+    // 标准格式: execution ([类成员访问修饰符] [包路径].[类名].[方法名]([形参类型])
+    // 通配符格式: execution(* com.learn.spring.aop.annotation.*..*(..))") 
+    
+    // 实例
+    @Before(value = "execution(public int com.learn.spring.aop.annotation.Calculator.add(..))")
+    @Order(value = 1) // 设定优先级, 越小, 越外层, 越优先
+    void beforeBusiness(JoinPoint joinPoint) {
+        // 根据切入点获取代理方法的签名信息
+        String methodName = joinPoint.getSignature().getName();
+        Object [] args = joinPoint.getArgs();
+        
+        System.out.println("前置通知: 方法名 " + methodName + Arrays.toString(args));
+    }
+}
+```
+
+### 5 种通知
+```java
+// @Before 前置通知, 在被代理的目标方法前执行
+// @AfterReturning 返回通知, 在被代理的目标方法成功结束后执行
+// @After 后置通知, 在被代理的目标方法最终结束后执行 (5.3版本前有变化)
+// @AfterThrowing 异常通知, 在被代理的目标方法异常结束后执行
+// @Around 环绕通知, 使用try...catch...finally 结构围绕整个被代理的目标方法, 包括上面四种通知对应的所有位置
+
+@Aspect
+@Component
+public class LogAspect {
+    // 返回通知, 获取结果
+    @AfterReturning(value="com.learn.spring.aop.annotation.LogAspect.PointCut()", returning = "result")
+    void afterReturningBusiness(JoinPoint joinPoint, Object result) {
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println("返回通知: 方法名 " + methodName + " 返回对象" + result.toString());
+    }
+
+    // 异常通知, 返回异常
+    @AfterThrowing(value="execution(public int com.learn.spring.aop.annotation.Calculator.add(..))", throwing = "ex")
+    void afterThrowingBusiness(JoinPoint joinPoint, Throwable ex) {
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println("异常通知: 方法名 " + methodName + " 返回对象" + ex.toString());
+    }
+    
+    // 环绕通知
+    @Around(value = "execution(public int com.learn.spring.aop.annotation.Calculator.sub(..))")
+    Object aroundBusiness(ProceedingJoinPoint joinPoint) {
+        String methodName = joinPoint.getSignature().getName();
+        Object[] args = joinPoint.getArgs();
+        String argsString = Arrays.toString(args);
+        Object result = null;
+        try {
+            System.out.println("前置通知: 方法名 " + methodName + argsString);
+            result = joinPoint.proceed(args);  // 直接执行代理方法, 获取返回对象
+            System.out.println("返回通知: 方法名 " + methodName + " 返回对象 " + result.toString());
+        } catch (Throwable throwable) {  // 获取异常
+            System.out.println("异常通知: 方法名 " + methodName + " 异常对象 " + throwable);
+        } finally {
+            System.out.println("后置通知: 方法名 " + methodName);
+        }
+        return result;
+    }
+}
+```
+
+### 6. 复用切面表达式
+```java
+@Aspect
+@Component
+public class LogAspect {
+    // 重用切入点表达式
+    @Pointcut(value = "execution(public int com.learn.spring.aop.annotation.Calculator.add(..))")
+    public void PointCut() { }
+    @After(value = "PointCut()")
+    void afterBusiness(JoinPoint joinPoint) {
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println("后置通知: 方法名 " + methodName);
+    }
+}
+```
+
+## 4.3 xml AOP
+```xml
+<aop:config>
+    <!-- 指定 切面bean 对象 -->
+    <aop:aspect ref="logAspect">
+        <aop:pointcut id="pointcut" expression="execution(* com.learn.spring.aop.xml.Calculator.add(int, int))"/>
+        <aop:before method="beforeBusiness" pointcut-ref="pointcut"/>
+        <aop:after method="afterBusiness" pointcut-ref="pointcut"/>
+        <aop:after-returning method="afterReturningBusiness" returning="result" pointcut-ref="pointcut"/>
+        <aop:after-throwing method="afterThrowingBusiness" throwing="ex" pointcut-ref="pointcut"/>
+    </aop:aspect>
+    <!-- 指定 切面bean 对象 -->
+    <aop:aspect ref="logAspect">
+        <aop:pointcut id="pointcut-sub" expression="execution(* com.learn.spring.aop.xml.Calculator.sub(int, int))"/>
+        <aop:around method="aroundBusiness" pointcut-ref="pointcut-sub"/>
+    </aop:aspect>
+</aop:config>
+```
+
+# 5. 整合 JUnit
+- 引入依赖
+```xml
+<!--spring对junit的支持相关依赖-->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>6.0.2</version>
+</dependency>
+<!--junit5测试-->
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-api</artifactId>
+    <version>5.3.1</version>
+</dependency>
+```
+
+- 单元测试类
+```java
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes= Config.class)
+public class SpringJunitTest {
+
+    @Autowired
+    private User user;
+
+    @Test
+    public void test() {
+        user.print();
+    }
+}
+```

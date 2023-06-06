@@ -27,6 +27,8 @@
         <module>spring-ioc-annotation</module>
         <module>spring-reflect</module>
         <module>spring-aop</module>
+        <module>spring-junit</module>
+        <module>spring-jdbc</module>
     </modules>
 
     <dependencies>
@@ -35,6 +37,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+            <version>6.0.2</version>
+        </dependency>
+        <!--spring对junit的支持相关依赖-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
             <version>6.0.2</version>
         </dependency>
         <!--junit5测试-->
@@ -79,6 +87,7 @@
             <artifactId>spring-aspects</artifactId>
             <version>6.0.2</version>
         </dependency>
+
 
     </dependencies>
 

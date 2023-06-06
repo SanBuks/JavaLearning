@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="com.learn.spring.aop.xml"/>
+
+    <!-- 配置 AOP -->
+    <aop:config>
+        <!-- 指定 切面bean 对象 -->
+        <aop:aspect ref="logAspect">
+            <aop:pointcut id="pointcut" expression="execution(* com.learn.spring.aop.xml.Calculator.add(int, int))"/>
+            <aop:before method="beforeBusiness" pointcut-ref="pointcut"/>
+            <aop:after method="afterBusiness" pointcut-ref="pointcut"/>
+            <aop:after-returning method="afterReturningBusiness" returning="result" pointcut-ref="pointcut"/>
+            <aop:after-throwing method="afterThrowingBusiness" throwing="ex" pointcut-ref="pointcut"/>
+        </aop:aspect>
+        <!-- 指定 切面bean 对象 -->
+        <aop:aspect ref="logAspect">
+            <aop:pointcut id="pointcut-sub" expression="execution(* com.learn.spring.aop.xml.Calculator.sub(int, int))"/>
+            <aop:around method="aroundBusiness" pointcut-ref="pointcut-sub"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
