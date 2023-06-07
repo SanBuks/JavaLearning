@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算属性精简写法</title>
+</head>
+<script type="text/javascript" src="../js/vue.js"></script>
+<body>
+
+<div id="button_container">
+  <h1>{{name}}</h1>
+  姓：<input type="text" id="first_name" placeholder="请输入姓" v-model="firstName" />
+  名：<input type="text" id="second_name" placeholder="请输入名" v-model="secondName" />
+  <br>
+  <!-- 计算属性只考虑 只读不改 -->
+  姓名：<span>{{fullNameComputed}}</span>
+
+</div>
+</body>
+
+<script type="text/javascript">
+  new Vue({
+    el: '#button_container',
+    data: {
+      name: '计算属性',
+      firstName: '',
+      secondName: '',
+    },
+    methods: {
+      fullName() {
+        return this.firstName + "-" + this.secondName
+      }
+    },
+    computed: {
+      // fullNameComputed: function() {  简化 =>
+      fullNameComputed() {
+        return this.firstName + '-' + this.secondName;
+      },
+    },
+  });
+</script>
+</html>

@@ -24,6 +24,7 @@
     methods: {  // methods 不做数据劫持和代理, 直接放在 Vue 实例中
       showInfo1(event) {                // 传递事件
         console.log(this);              // this 是 VM, 如果是箭头函数则是 Window
+        console.log(this.name)          // 一定要用 this 访问 data 成员
         alert(event.target.innerHTML);  // 获取事件源的字符
       },
       showInfo2(number, event) {
