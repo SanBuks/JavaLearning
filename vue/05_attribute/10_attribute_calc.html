@@ -15,12 +15,11 @@
 <!-- 插值语法, 模板重新解析, 如果变量数值变化会重新生成 DOM -->
 <!--  姓名：<span>{{firstName.slice(0, 3)}}-{{secondName.slice(0, 3)}}</span> -->
 
-<!-- 插值语法, 模板重新解析, 一定会调用函数-->
+<!-- 插值语法, 模板重新解析, 一定会调用函数, 存在性能损失 -->
 <!--  姓名：<span>{{fullName()}}</span> -->
 
-  <!-- 计算语法 -->
-    姓名1：<span>{{fullNameComputed}}</span>
-    姓名2：<span>{{fullNameComputed}}</span>
+  <!-- 计算属性语法: 对已存在的属性进行加工 -->
+    姓名：<span>{{fullNameComputed}}</span>
 
 </div>
 </body>
@@ -39,23 +38,29 @@
       }
     },
     computed: {
-      // vue 代理了 computed 下的计算属性对象
-      // Object.defineProperty(vue, 'fullNameComputed', {
-      //   get() {
-      //     return computed.fullNameComputed
-      //   },
-      //   set(value) {
-      //     computed.fullNameComputed = value
-      //   },
-      // });
-
+      // 计算属性一定是 Object
       fullNameComputed: {
         get() {
           // 第一次调用时: 调用并缓存
           // 所依赖的数据改变时: 调用并更新缓存
-          return this.firstName + '-' + this.secondName; // this 指向 vm
+          console.log("调用了get")
+          return this.firstName + '-' + this.secondName // this 指向 vm
         },
+        set(value) {
+          // 如果修改了 firstName 和 secondName 会同时调用 get 更新
+          console.log("调用了set")
+        }
       },
+
+      // vue 代理了 computed 下的计算属性的对象
+      // Object.defineProperty(vue, 'fullNameComputed', {
+      //   get() {
+      //     return computed.fullNameComputed.get()
+      //   },
+      //   set(value) {
+      //     computed.fullNameComputed.set(value)
+      //   },
+      // });
     },
   });
 </script>
