@@ -11,7 +11,6 @@ public class BookController {
     private IBookService bookService;
 
     public void buyBook(Integer bookId, Integer userId) {
-
-        System.out.println("buy book");
+        bookService.buyBook(bookId, userId);
     }
 }

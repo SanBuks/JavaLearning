@@ -15,6 +15,6 @@ public class TxTest {
 
     @Test
     void TestBookController () {
-        bookController.buyBook();
+        bookController.buyBook(1, 1);
     }
 }
