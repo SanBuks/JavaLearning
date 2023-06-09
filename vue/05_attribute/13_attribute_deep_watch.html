@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>深度监视</title>
+</head>
+<script type="text/javascript" src="../js/vue.js"></script>
+<body>
+
+<div id="container">
+  <h1>数字是 {{number.a}}</h1>
+  <button @click="++number.a">+1</button>
+</div>
+</body>
+
+<script type="text/javascript">
+  new Vue({
+    el: '#container',
+    data: {
+      number: {
+        a: 1,
+        b: 2,
+      }
+    },
+    watch: {
+      // 1. 监视嵌套关系其中一个属性
+      'number.a': {
+        immediate: true,
+        handler(newValue, oldValue) {
+          console.log("a 被修改了", newValue, oldValue)
+        }
+      },
+      // 2. 监视嵌套关系其中一个属性
+      number: {
+        deep: true,
+        handler(newValue, oldValue) {
+          console.log("number 中任意数字被修改了", newValue, oldValue)
+        }
+      }
+
+    }
+  })
+</script>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算属性与监视属性</title>
+</head>
+<script type="text/javascript" src="../js/vue.js"></script>
+<body>
+
+<div id="button_container">
+  <h1>{{name}}</h1>
+  姓：<input type="text" id="first_name" placeholder="请输入姓" v-model="firstName" />
+  名：<input type="text" id="second_name" placeholder="请输入名" v-model="secondName" />
+  <br>
+  姓名：<span>{{fullName}}</span>
+
+</div>
+</body>
+<!-- window 管理函数 要用到 vm 实例写成箭头函数 -->
+<!-- vm 管理函数 写成一般函数, 如果写成箭头函数, vm的指针被吞则指向 window -->
+<script type="text/javascript">
+  new Vue({
+    el: '#button_container',
+    data: {
+      name: '计算属性',
+      firstName: '',
+      secondName: '',
+      fullName: ''
+    },
+    // computed: {
+    // 不可以异步处理
+    //   fullName() {
+    //     return this.firstName + this.secondName
+    //   }
+    // },
+    watch: {
+      firstName(newValue) {
+        // 可以异步处理
+        setTimeout(()=>{
+          console.log(this) // this 是 vm
+          this.fullName = newValue + '-' + this.secondName;
+        }, 1000)
+
+        // setTimeout(function(){
+        //   console.log(this) // this 是 window, 出错
+        //   this.fullName = newValue + '-' + this.secondName;
+        // }, 1000)
+      },
+      secondName(newValue) {
+        this.fullName = this.firstName + '-' + newValue;
+      }
+    }
+  });
+</script>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>天气案例</title>
+  <title>监视</title>
 </head>
 <script type="text/javascript" src="../js/vue.js"></script>
 <body>
@@ -37,23 +37,30 @@
       }
     },
     watch: {
-      <!-- 3. 监视 -->
+      <!-- 3. 监视一般属性 -->
       isHot: {
+        // 初始化前调用一次 handler
+        immediate: true,
         handler(newValue, oldValue) {
           console.log("isHot 被修改了", newValue, oldValue)
         }
+      },
+      <!-- 4. 监视计算属性 -->
+      info: {
+        immediate: true,
+        handler(newValue, oldValue) {
+          console.log("info 被计算了", newValue, oldValue)
+        }
       }
     }
-  });
+  })
+
+  // watch 的第二种配置方式
+  // let vm.$watch('isHot', {
+  //   immediate: true,
+  //   handler(newValue, oldValue) {
+  //     console.log("isHot 被修改了", newValue, oldValue)
+  //   }
+  // })
 </script>
 </html>
-trigger_angle
-random_trigger_angle
-record_wave_delay_time
-prepare_time_before_error
-wait_time_before_recovery
-wait_time_after_recovery
-repetition_number
-
-t.trigger_angle, t.random_trigger_angle, t.record_wave_delay_time, t.prepare_time_before_error,
-t.wait_time_before_recovery, t.wait_time_after_recovery, t.repetition_number
