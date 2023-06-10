@@ -16,6 +16,7 @@
   <div v-else-if="n === 1" style="background-color: yellowgreen; height: 300px; width: 200px}"></div>
   <div v-else style="background-color: rebeccapurple; height: 300px; width: 200px}"></div>
   <button @click="change">点我改变</button>
+  <hr/>
 
   <!-- 3. 组合条件渲染 -->
   <template v-if="n===1">
@@ -23,13 +24,25 @@
     <h1>11111</h1>
     <h1>11111</h1>
   </template>
+  <hr/>
+
 </div>
+
 
 <script>
   new Vue({
     el: '#con',
     data: {
       show: false,
+      persons: [
+        { id: '001', name: 'john', age: 13 },
+        { id: '002', name: 'tod', age: 14 },
+        { id: '003', name: 'jan', age: 15 },
+      ],
+      car: {
+        name: "ccc",
+        type: 'xxx'
+      },
       n: 0,
     },
     methods: {
