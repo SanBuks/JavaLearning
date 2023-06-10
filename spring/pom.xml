@@ -29,6 +29,7 @@
         <module>spring-aop</module>
         <module>spring-junit</module>
         <module>spring-jdbc</module>
+        <module>spring-resource</module>
     </modules>
 
     <dependencies>
