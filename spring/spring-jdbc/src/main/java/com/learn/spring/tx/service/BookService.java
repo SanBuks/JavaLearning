@@ -12,10 +12,13 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class BookService implements IBookService {
 
-    @Autowired
     private IBookDao bookDao;
 
-//    @Transactional(readOnly = true) // 只读操作
+    @Autowired
+    public void setBookDao(IBookDao bookDao) {
+        this.bookDao = bookDao;
+    }
+    //    @Transactional(readOnly = true) // 只读操作
 //    @Transactional(timeout = 3)     // 超时回滚
 //    @Transactional(noRollbackFor = ArithmeticException.class) // 指定 runtime 异常不回滚
 //    @Transactional(isolation = Isolation.DEFAULT) // 隔离性
@@ -28,7 +31,8 @@ public class BookService implements IBookService {
     // - 幻读: 多出一行
     //  - SERIALIZABLE
 
-    @Transactional(propagation = Propagation.REQUIRED)
+//    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     // 传播行为
     // REQUIRED：支持当前事务，如果不存在就新建一个(默认)【没有就新建，有就加入】
     // REQUIRES_NEW：开启一个新的事务，如果一个事务已经存在，则将这个存在的事务挂起
@@ -47,5 +51,14 @@ public class BookService implements IBookService {
         Integer price = bookDao.getBookPriceById(bookId);
         bookDao.updateStock(bookId);
         bookDao.updateUserBalance(userId, price);
+    }
+
+//    @Transactional // 1. 调用同类函数, 同类函数的 transaction 不奏效, 调用函数的 transaction 奏效
+//                   // 2. 一般通过新的类(如 BooksService), 调用相关函数可使函数的 transaction 奏效
+    @Override
+    public void buyBooks(Integer bookId, Integer userId, int times) {
+//        for (int i = 0; i < times; ++i) {
+//            buyBook(bookId, userId);
+//        }
     }
 }
