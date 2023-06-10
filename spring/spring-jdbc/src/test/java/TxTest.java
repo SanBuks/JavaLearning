@@ -14,7 +14,14 @@ public class TxTest {
     private BookController bookController;
 
     @Test
-    void TestBookController () {
+    void TestBookControllerBuyBook () {
         bookController.buyBook(1, 1);
+    }
+
+    @Test
+    void TestBookControllerBuyBooks () {
+        bookController.buyBooks(1, 1, 3);
+//        bookController.buyBooks(1, 1, 3);
+//        bookController.buyBooks(1, 1, 2);
     }
 }
