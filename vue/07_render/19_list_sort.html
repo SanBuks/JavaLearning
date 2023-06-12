@@ -9,10 +9,10 @@
 
 <div id="con">
   <div id="list">
-    <label>关键字 <input type="text"/> </label>
-    <button @click="sortType = 1">降序</button>
-    <button @click="sortType = 2">升序</button>
-    <button @click="sortType = 3">默认</button>
+    <label>关键字 <input type="text" v-model="keyWord"/> </label>
+    <button @click="sortType = 1">ID排序</button>
+    <button @click="sortType = 2">Name排序</button>
+    <button @click="sortType = 3">Age排序</button>
     <ul>
       <li v-for="(item, index) in processedPersons" :key="item.id">
         {{item.name}} - {{item.age}} - {{index}}
@@ -27,27 +27,26 @@
     el: '#con',
     data: {
       persons: [
-        { id: '001', name: 'john', age: 13 },
-        { id: '002', name: 'tod', age: 14 },
-        { id: '003', name: 'jan', age: 15 },
+        { id: '001', name: 'john', age: 16 },
+        { id: '002', name: 'zod', age: 14 },
+        { id: '003', name: 'ban', age: 13 },
       ],
       keyWord: '',
       sortType: 0,  // 0-id, 1-name, 2-age
-      processedPersons: [],
     },
     computed: {
-      immediate: true,
-      sortPersons() {
+      processedPersons() {
+        // 先
         let filterPersons = this.persons.filter((item) => {
-          return item.name.indexOf(this.filter_key) !== -1
+          return item.name.indexOf(this.keyWord) !== -1
         })
         return filterPersons.sort((lhs, rhs)=>{
-          if (this.sortType === 0) {
-            return lhs.id < rhs.id
-          } else if (this.sortType === 1) {
-            return lhs.name < rhs.name
+          if (this.sortType === 1) {
+            return lhs.id - rhs.id
+          } else if (this.sortType === 2) {
+            return lhs.name.localeCompare(rhs.name)
           } else {
-            return lhs.age < rhs.age
+            return lhs.age - rhs.age
           }
         })
       }
