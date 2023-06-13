@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>监视数据总结</title>
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+
+<!-- 1. vue._data 对 data 做数据代理(所有层次), vue 对 _data 中的属性做二次数据代理
+     2. 通过 setter 实现监视, 在 new Vue 时对数据进行响应式代理(判断更改, 通知模板重新解析)
+        后追加的属性通过 vm.$set(target，propertyName/index，value) 添加 (vm.$set() 不能给vm 或 vm的根数据对象 添加属性)
+     3. 监测数组中的数据通过包裹数组更新元素的方法实现
+        修改数组中的某个元素一定要用如下方法: API, $set() -->
+<div id="root">
+  <button @click="++age">增加年龄</button>
+  <button @click="insertAttribute">增加性别属性</button>
+  <button @click="insertElement">增加对象元素</button>
+  <button @click="updateElement">改变对象元素属性值</button>
+  <h1>年龄:{{age}}</h1>
+  <h1 v-show="student.sex">性别:{{student.sex}}</h1>
+  <ul v-for="(item, index) in friends" :key="item.id">
+    <li> {{item.id}} - {{item.name}} - {{item.age}} - {{index}}</li>
+  </ul>
+</div>
+</body>
+<script>
+  new Vue({
+    el: '#root',
+    data: {
+      age: 10,
+      student: {
+      },
+      friends: [
+        {id: '0001', name: 'john', age: 13},
+        {id: '0002', name: 'bob', age: 11},
+      ]
+    },
+    methods: {
+      insertAttribute () {
+        this.$set(this.student, 'sex', 'man')
+      },
+      insertElement() {
+        this.friends.unshift({ id: '0003', name: 'jam', age: 10 })
+      },
+      updateElement () {
+        if (this.friends.length !== 0) {
+          this.friends[0].name = 'xyz'
+        }
+      },
+    }
+  })
+</script>
+</html>
