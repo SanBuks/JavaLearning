@@ -606,17 +606,19 @@ public class TestCalculator {
 ### 引入依赖
 ```xml
 <!--spring aop依赖-->
-<dependency>
+<dependencies>
+  <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-aop</artifactId>
     <version>6.0.2</version>
-</dependency>
-<!--spring aspects依赖-->
-<dependency>
+  </dependency>
+  <!--spring aspects依赖-->
+  <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-aspects</artifactId>
     <version>6.0.2</version>
-</dependency>
+  </dependency>
+</dependencies>
 ```
 
 ### 配置
@@ -734,17 +736,19 @@ public class LogAspect {
 - 引入依赖
 ```xml
 <!--spring对junit的支持相关依赖-->
-<dependency>
+<dependencies>
+  <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-test</artifactId>
     <version>6.0.2</version>
-</dependency>
-<!--junit5测试-->
-<dependency>
+  </dependency>
+  <!--junit5测试-->
+  <dependency>
     <groupId>org.junit.jupiter</groupId>
     <artifactId>junit-jupiter-api</artifactId>
     <version>5.3.1</version>
-</dependency>
+  </dependency>
+</dependencies>
 ```
 
 - 单元测试类
@@ -779,3 +783,117 @@ public class SpringJunitTest {
 ### 
 
 
+# 7. Resource
+## 7.1 概述
+- 提供低层次资源访问能力
+- Resource extends InputStreamSource
+- 相关接口
+```java
+public interface Resource extends InputStreamSource {
+  boolean exists();
+  boolean isReadable();
+  boolean isOpen();
+  boolean isFile();
+  URI getURI() throws IOException;
+  File getFile() throws IOException;
+  ReadableByteChannel readableChannel() throws IOException;
+  long contentLength() throws IOException;
+  long lastModified() throws IOException;
+  Resource createRelative(String relativePath) throws IOException;
+
+  URL getURL() throws IOException;
+  @Nullable String getFilename();
+  String getDescription();
+}
+
+public interface InputStreamSource {
+    InputStream getInputStream() throws IOException;
+}
+```
+
+## 7.2 实现类
+- UrlResource: `https:`, `ftp:`, `file:` 作为前缀
+- ClassPathResource: resources 目录下文件名, 相对路劲
+- FileSystemResource: 文件系统下全路径
+- ServletContextResource: 解释相关Web应用程序根目录中的相对路径
+- InputStreamResource: 基于 InputStream 的实现, 它的使用场景在没有特定的资源实现的时候使用, isOpen()方法返回true, 只能读一次
+- ByteArrayResource: 字节数组的实现类, 通过给定的数组创建了一个ByteArrayInputStream
+
+## 7.3 ResourceLoader 
+- ApplicationContext 采用 ResourceLoader 获取对应资源 (策略模式)
+- FileSystemXmlApplicationContext 对应 ClassPathResource
+- ClassPathXmlApplicationContext 对应 FileSystemResource
+- XmlWebApplicationContext 对应 ServletContextResource
+
+## 7.4 ResourceLoaderAware
+- ResourceLoaderAware接口的Bean类部署在Spring容器中, Spring容器会将自身当成ResourceLoader作为setResourceLoader()方法的参数传入
+- 由于ApplicationContext的实现类都实现了ResourceLoader接口, Spring容器自身完全可作为ResorceLoader使用
+
+## 7.5 Resource 注入
+```xml
+<bean id="resource" class="com.learn.spring.resource.ResourceDIBean">
+  <property name="resource" value="classpath:example_file.txt"/>
+</bean>
+```
+
+## 7.6 ApplicationContext 多配置
+- 本质 ApplicationContext 以 Resource 的方式来访问配置文件
+- classpath*:bean.xml 会搜索路径下多个 bean.xml 配置, 最终合并为一个 配置进行加载
+- classpath*:bean*.xml 会搜索路径下多个 bean*.xml 配置, 最终合并为一个 配置进行加载 
+
+# 8. 国际化
+## 8.1 JAVA 国际化
+- 优先级: messages_en_GB.properties > messages.properties
+- 命名格式: messages.properties, messages_en_GB.properties
+```java
+public class I18NTest {
+  @Test
+  public void test() {
+    ResourceBundle bundle1 = ResourceBundle.getBundle("messages", new Locale("zh", "CN"));
+    System.out.println(bundle1.getString("test"));
+
+    ResourceBundle bundle2 = ResourceBundle.getBundle("messages", new Locale("en", "GB"));
+    System.out.println(bundle2.getString("test"));
+
+    ResourceBundle bundle3 = ResourceBundle.getBundle("messages", new Locale("zh", "CN"));
+    System.out.println(bundle3.getString("nofound"));
+  }
+}
+```
+
+## 8.2 Spring 国际化
+- 配置文件
+```properties
+# {0} 为动态文本
+www=welcome {0}, time:{1}
+```
+
+- XML 配置 ResourceBundleMessageSource
+```xml
+<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+  <property name="basenames">
+    <list>
+      <value>spring-message</value>
+    </list>
+  </property>
+  <property name="defaultEncoding">
+    <value>UTF-8</value>
+  </property>
+</bean>
+```
+
+-  通过 上下文 使用 ResourceBundleMessageSource
+```java
+public class I18NSpringTest {
+  @Test
+  public void test() {
+    ApplicationContext app = new ClassPathXmlApplicationContext("bean.xml");
+    Object[] objs = new Object[]{"param1", new Date().toString()};
+    System.out.println(app.getMessage("www", objs, Locale.CHINA));
+    System.out.println(app.getMessage("www", objs, Locale.UK));
+  }
+}
+```
+
+# 9 数据校验
+## 9.1 
