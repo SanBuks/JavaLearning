@@ -45,6 +45,23 @@
     }
   })
 
-  // 5. vc 不可绑定容器, vm 可以; vc 返回 data() 防止引用, vm 不用
+  // 5. vc 与 vm 的区别：vc 不可绑定容器, vm 可以; vc 返回 data() 防止引用, vm 不用
+
+  // 6. 原型相关
+  function Demo() {
+    this.a = 3
+    this.b = 2
+  }
+  const demo = new Demo()
+
+  // 隐式原型
+  console.log(demo.__proto__)
+  // 显式原型
+  console.log(Demo.prototype)
+  // 二者都指向一个 原型对象
+  console.log(demo)
+  // 在原型上追加属性
+  demo.__proto__.x = 4
+
 </script>
 </html>

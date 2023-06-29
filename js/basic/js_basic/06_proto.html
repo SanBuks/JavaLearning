@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>原型</title>
+</head>
+<body>
+<script>
+
+  // 1. 如果在构造函数中创建函数成员, 则每次对象的创建都会创建一个新的成员, 导致效率低下
+  //    通过使用同一个全局函数可以解决
+  function sayHi() {
+  //    如果不加 this 则会在全局范围插入找 message, 而忽略的对象的 this
+    console.log(this.message)
+  }
+  function User() {
+    this.message = 'hi'
+    this.sayHi = sayHi
+    // this.sayHi = function() {
+    //   console.log(this.message)
+    // }
+  }
+  let user = new User;
+  user.sayHi()
+
+  // 2. 尽量不在全局作用域中定义函数, 有很多缺点, 这里引入 原型对象
+  //    不同类实例的 原型对象 不一样
+  console.log(User.prototype)
+  //    实例含有隐式 原型对象
+  console.log(user.__proto__)
+
+  // 3. 在原型对象上追加属性或方法解决上述问题
+  User.prototype.a = '3'
+  //    实例中访问
+  console.log(user.a)
+
+  // 3. 查看是否有属性
+  console.log('a' in user)  // true
+  console.log(user.hasOwnProperty('a')) // false
+  console.log(user.__proto__.hasOwnProperty('a')) // false
+
+</script>
+</body>
+</html>
