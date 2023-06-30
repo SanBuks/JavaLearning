@@ -24,6 +24,7 @@
 
     <modules>
         <module>ch05-inheritance</module>
+        <module>ch12-concurrency</module>
     </modules>
 
     <dependencies>
