@@ -26,6 +26,7 @@ public class LogAspect {
 
     @After(value="PointCut()")
     void afterBusiness(JoinPoint joinPoint) {
+        System.out.println(joinPoint.getTarget().getClass());
         String methodName = joinPoint.getSignature().getName();
         System.out.println("后置通知: 方法名 " + methodName );
     }

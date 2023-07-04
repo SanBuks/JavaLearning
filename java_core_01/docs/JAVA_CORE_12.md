@@ -19,7 +19,21 @@
   - 两者联系: 本质代理, public class Thread implements Runnable
  
 ## 常用方法: 
-- currentThread() 获取当前线程
-- Thread.sleep() 使得当前线程睡眠指定的毫秒数
+### 一般方法
+- Thread.currentThread() 获取当前线程
+- Thread.sleep() 当前线程阻塞指定的毫秒数
 - Thread.yield() 一旦执行此方法, 就释放CPU的执行权
-- join() 在线程a中通过线程b调用join(), 意味着线程a进入阻塞状态, 直到线程b执行结束, 线程a才结束阻塞状态, 继续执行
+- b.join() 在线程a中通过线程b调用join(), 意味着线程a进入阻塞状态, 直到线程b执行结束, 线程a才结束阻塞状态, 继续执行
+- b.isAlive() 判断线程是否存活
+- stop, suspend, resume 不建议使用因为会存在资源未清理, 死锁问题 
+### 优先级
+- a.getPriority()
+- a.setPriority();
+- Thread.MAX_PRIORITY
+
+### 声明周期
+- 新建 
+- 就绪
+- 运行
+- 阻塞
+- 死亡

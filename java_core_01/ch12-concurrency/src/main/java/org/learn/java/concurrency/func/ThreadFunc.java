@@ -1,47 +1,56 @@
 package org.learn.java.concurrency.func;
 
-
-import org.junit.jupiter.api.Test;
-
 public class ThreadFunc {
 
+    public static void main(String[] args) {
+        A a = new A("A");
+        B b = new B("B");
 
-//    // Sleep
-//    public static void main(String [] args) {
+        System.out.println(a.getPriority());
+        System.out.println(b.getPriority());
 
-    @Test
-    public void sleepTest() throws InterruptedException {
-        A a = new A();
-        B b = new B();
+        a.setPriority(Thread.MAX_PRIORITY);
+        b.setPriority(Thread.MIN_PRIORITY);
 
-        Thread thread1 = new Thread(a, "A");
-        Thread thread2 = new Thread(b, "B");
-        thread1.start();
-        thread2.start();
-
-        thread1.join();
-        thread2.join();
+        a.setB(b);
+        a.start();
+        b.start();
     }
 }
 
-class A implements Runnable {
+class A extends Thread {
+    private Thread b;
+
+    A(String name) {
+        this.setName(name);
+    }
+
     @Override
     public void run() {
-        for (int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 1000; ++i) {
+            System.out.println(Thread.currentThread().getName() + " - " + i);
             try {
-                Thread.sleep(500);
+                // a 阻塞 直到 b 结束
+                b.join();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println(Thread.currentThread().getName() + " - " + i);
         }
+        System.out.println(b.isAlive());
+    }
+
+    public void setB(Thread b) {
+        this.b = b;
     }
 }
 
-class B implements Runnable {
+class B extends Thread {
+    B(String name) {
+        this.setName(name);
+    }
     @Override
     public void run() {
-        for (int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 1000; ++i) {
             System.out.println(Thread.currentThread().getName() + " - " + i);
         }
     }
