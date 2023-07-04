@@ -16,4 +16,10 @@
 - 二者区别: 
   - 相同: 都使用 Thread 的 start 方法, 都需要创建 Thread 类或子类的对象
   - 接口优点: 规避单继承问题, 更好处理数据是共享还是分离, 更好处理数据与代码分离
-  - 联系: 本质代理, public class Thread implements Runnable
+  - 两者联系: 本质代理, public class Thread implements Runnable
+ 
+## 常用方法: 
+- currentThread() 获取当前线程
+- Thread.sleep() 使得当前线程睡眠指定的毫秒数
+- Thread.yield() 一旦执行此方法, 就释放CPU的执行权
+- join() 在线程a中通过线程b调用join(), 意味着线程a进入阻塞状态, 直到线程b执行结束, 线程a才结束阻塞状态, 继续执行
