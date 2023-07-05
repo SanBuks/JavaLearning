@@ -12,6 +12,7 @@
   <student></student>
   <!-- 每次调用返回一个全新的 vc -->
   <student></student>
+  <!-- 非脚手架不可以用自闭 -->
 </div>
 
 </body>
@@ -19,12 +20,15 @@
 <script>
 
   const student = Vue.extend({
+    // 指定开发者工具中的名称
+    name: 'student',
     // 3. this 指向 vc
     template: `
       <div>
         <h2>学生名称：{{ studentName }}</h2>
         <h2>学生年龄：{{ studentAge }}</h2>
       </div>`,
+    // 函数形式防止引用
     data() {
       return {
         studentName: 'Bob',
@@ -34,16 +38,20 @@
   });
 
   // 1. student 实质名为 VueComponent 构造函数
-  // 2. 每次调用都会 new 一个新的函数对象
+  // 2. 每次调用都会 new 一个新的对象
   console.log('@', student)
+
+  // Vue.component('hello',hello) // 全局注册
 
   new Vue({
     // 4. this 指向 vm, vm 中 $children 递归包含 vc
     el:"#root",
     components: {
+      // StudentTest 需要 脚手架可以命名
       student: student,
     }
   })
+
 
   // 5. vc 与 vm 的区别：vc 不可绑定容器, vm 可以; vc 返回 data() 防止引用, vm 不用
 

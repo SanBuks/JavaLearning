@@ -6,7 +6,7 @@
 		<script type="text/javascript" src="../js/vue.js"></script>
 	</head>
 	<body>
-		<!-- 
+		<!--
 			Vue中使用组件的三大步骤：
 					一、定义组件(创建组件)
 					二、注册组件
@@ -53,7 +53,7 @@
 				<div class="demo">
 					<h2>学校名称：{{schoolName}}</h2>
 					<h2>学校地址：{{address}}</h2>
-					<button @click="showName">点我提示学校名</button>	
+					<button @click="showName">点我提示学校名</button>
 				</div>
 			`,
 			// el:'#root', //组件定义时，一定不要写el配置项，因为最终所有的组件都要被一个vm管理，由vm决定服务于哪个容器。
@@ -85,11 +85,11 @@
 				}
 			}
 		})
-		
+
 		//第一步：创建hello组件
 		const hello = Vue.extend({
 			template:`
-				<div>	
+				<div>
 					<h2>你好啊！{{name}}</h2>
 				</div>
 			`,
@@ -99,7 +99,7 @@
 				}
 			}
 		})
-		
+
 		//第二步：全局注册组件
 		Vue.component('hello',hello)
 
