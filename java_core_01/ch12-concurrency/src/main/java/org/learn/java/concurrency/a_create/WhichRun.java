@@ -1,6 +1,4 @@
-package org.learn.java.concurrency.create;
-
-import org.junit.jupiter.api.Test;
+package org.learn.java.concurrency.a_create;
 
 public class WhichRun {
 

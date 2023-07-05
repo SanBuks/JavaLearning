@@ -1,6 +1,4 @@
-package org.learn.java.concurrency.create;
-
-import org.junit.jupiter.api.Test;
+package org.learn.java.concurrency.a_create;
 
 public class MyRunnable implements Runnable {
     // 1. 内部: 数据 与 run 方法分离

@@ -1,6 +1,4 @@
-package org.learn.java.concurrency.create;
-
-import org.junit.jupiter.api.Test;
+package org.learn.java.concurrency.a_create;
 
 public class MyThread extends Thread {
     public MyThread(String name) {

@@ -1,4 +1,4 @@
-package org.learn.java.concurrency.func;
+package org.learn.java.concurrency.b_func;
 
 public class ThreadFunc {
 
