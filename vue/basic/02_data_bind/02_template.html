@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>单向绑定</title>
+</head>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<body>
+<div id="root">
+  <!-- 插值语法, 主要用于标签体 -->
+  <h1>{{name}}</h1>
+  <!-- v-bind 指令主要绑定标签属性, 字符串内解析为 JS 表达式-->
+  <a v-bind:href="address" v-bind:x="x">网址</a>
+  <!-- v-bind 指令可以简写为 ':' -->
+  <a :href="school.name" :x="Date.now()">网址</a>
+</div>
+
+<script type="text/javascript">
+  new Vue({
+    el: '#root',
+    data: {
+      x: 'aaa',
+      name: 'text',
+      school: {
+        name: 'text',
+      },
+      address: 'www.ttttt.com',
+    },
+  });
+</script>
+</body>
+</html>

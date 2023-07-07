@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>事件修饰符</title>
+</head>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<body>
+<style>
+    * {
+        margin-top: 20px;
+    }
+
+    .demo1 {
+        height: 50px;
+        background-color: skyblue;
+        padding: 5px;
+    }
+
+    .demo2 {
+        height: 20px;
+        background-color: springgreen;
+        padding: 5px;
+    }
+
+    .list {
+        width: 200px;
+        height: 200px;
+        background-color: springgreen;
+        overflow: auto;
+    }
+</style>
+
+<div id="button_container">
+  <h1>{{name}}</h1>
+
+  <!-- 1. 阻止默认行为 -->
+  <a href="https://www.sss.com" @click.prevent="showInfoPrevent" type="button">防止跳转</a>
+
+  <!-- 2. 阻止事件冒泡, 同时可以组合额外修饰符 -->
+  <!-- 事件冒泡是指当某个元素上的事件被触发时, 该事件将会沿着 DOM 树向上传播, 直到传播到最外层的元素为止 -->
+  <div class="demo1" id="div1" @click="showInfoStop">
+    <!-- 从 button 开始防止事件冒泡 -->
+    <button @click.stop.prevent="showInfoStop">阻止事件冒泡</button>
+  </div>
+
+  <!-- 3. 事件只触发一次 -->
+  <button @click.once="showInfoOnce">只触发一次</button>
+
+  <!-- 4. 事件捕获 -->
+  <div class="demo1" id="divOuter" @click.capture="showInfoCapture1(1)">
+    <div class="demo2" id="divInner" @click.capture="showInfoCapture2(2)"></div>
+  </div>
+
+  <!-- 5. self 阻止冒泡 -->
+  <!-- 只有事件的源对象是自己时才会触发 -->
+  <div class="demo1" id="div_capture" @click.self="showInfoSelf">
+    <button @click="showInfoSelf">self使用</button>
+  </div>
+
+  <!-- 6. 滚动事件 passive 执行默认事件行为不必等待回调函数返回 -->
+  <!--    wheel  需要等待回调函数执行 -->
+  <!--    scroll 不需要等待回调函数执行区别 -->
+  <ul class="list" @wheel.passive="handleScroll">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+  </ul>
+</div>
+</body>
+
+<script type="text/javascript">
+  new Vue({
+    el: '#button_container',
+    data: {
+      name: '事件修饰符',
+    },
+    methods: {
+      showInfoPrevent(event) {
+        // event.stopPropagation()
+        alert(event.target.innerHTML);
+      },
+      showInfoStop(event) {
+        alert(event.target.innerHTML);
+      },
+      showInfoOnce(event) {
+        alert(event.target.innerHTML);
+      },
+      showInfoCapture1(number) {
+        console.log(number);
+      },
+      showInfoCapture2(number) {
+        console.log(number);
+      },
+      showInfoSelf(event) {
+        console.log(event.target);
+      },
+      handleScroll(event) {
+        // 触发调用事件回调如果出现
+        for (let i = 0; i < 10000000; ++i) {
+          console.log('#');
+        }
+        console.log(event.target);
+      },
+    },
+  });
+</script>
+</html>

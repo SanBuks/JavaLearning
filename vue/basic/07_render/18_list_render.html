@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>列表渲染</title>
+  <script src="../../js/vue.js"></script>
+</head>
+<body>
+
+<div id="con">
+  <div id="list">
+    <ul>
+      <!-- 1. 指定 遍历 item 和 key 值 -->
+      <li v-for="item in persons" :key="item.id">
+        {{item.name}} - {{item.age}}
+      </li>
+    </ul>
+    <hr/>
+
+    <ul>
+      <!-- 2. 指定 遍历 item 和 index 和 key 值 -->
+      <li v-for="(item, index) in persons" :key="item.id">
+        {{item.name}} - {{item.age}} - {{index}}
+      </li>
+    </ul>
+    <hr/>
+
+    <ul>
+      <!-- 3. 指定 遍历 value 和 attribute_name 和 key 值 -->
+      <li v-for="(value, key) in car" :key="key">
+        {{value}} - {{key}}
+      </li>
+    </ul>
+    <hr/>
+
+
+    <button @click="add">增加一个</button>
+    <ul>
+      <!-- 4. 原理 key 被 vue 内部维护 -->
+      <!-- <li v-for="(item, index) in another_persons" :key="index"> 会出现错位问题, 效率问题 -->
+      <!-- 错位问题因为 DOM diff 算法不对比 input 内部的值 -->
+      <li v-for="(item, index) in another_persons" :key="item.id">
+        {{item.name}} - {{item.age}} - {{index}}
+        <input type="text">
+      </li>
+    </ul>
+    <hr/>
+
+    过滤字符<input type="text" v-model="filter_key">
+    <ul>
+      <!-- 5. 列表过滤 -->
+      <!-- -->
+      <li v-for="(item, index) in filter_result" :key="item.id">
+        {{item.name}} - {{item.age}} - {{index}}
+        <input type="text">
+      </li>
+    </ul>
+    <hr/>
+
+
+  </div>
+</div>
+
+<script>
+  new Vue({
+    el: '#con',
+    data: {
+      persons: [
+        { id: '001', name: 'john', age: 13 },
+        { id: '002', name: 'tod', age: 14 },
+        { id: '003', name: 'jan', age: 15 },
+      ],
+      car: {
+        name: 'ccc',
+        type: 'xxx',
+      },
+      another_persons: [
+        { id: '001', name: 'john', age: 13 },
+        { id: '002', name: 'tod', age: 14 },
+        { id: '003', name: 'jan', age: 15 },
+      ],
+      filter_key: '',
+      filter_persons: [
+        { id: '001', name: 'john', age: 13 },
+        { id: '002', name: 'tod', age: 14 },
+        { id: '003', name: 'jan', age: 15 },
+      ],
+      // filter_result: [
+      // ]
+    },
+    methods: {
+      add () {
+        this.another_persons.unshift({ id: '0004', name: 'jame', age: 16 })
+      },
+    },
+    // watch: {
+    //   filter_key: {
+    //     immediate: true,
+    //     handler (newValue, oldValue) {
+    //       this.filter_result =
+    //         this.filter_persons.filter((p) => {
+    //           // newValue = '' 则返回 0
+    //           return p.name.indexOf(newValue) !== -1
+    //         })
+    //     },
+    //   },
+    // },
+
+    computed: {
+      filter_result() {
+        return this.filter_persons.filter((item) => {
+          return item.name.indexOf(this.filter_key) !== -1
+        })
+      }
+    }
+  })
+</script>
+</body>
+</html>
