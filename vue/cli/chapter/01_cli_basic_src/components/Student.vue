@@ -1,7 +1,7 @@
 <script>
 // 组件交互代码
 export default {
-  name: 'Student',
+  name: 'm-student',
   data() {
     return {
       name: 'Bob',
