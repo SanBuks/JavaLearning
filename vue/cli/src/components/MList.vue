@@ -1,9 +1,7 @@
 <template>
   <ul class="todo-main">
-    <m-item></m-item>
-    <m-item></m-item>
-    <m-item></m-item>
-    <m-item></m-item>
+    <m-item v-for="item in toDoList" :key="item.id" :title="item.title" :todo="item"
+            :handleChange="handleChange" :handleRemove="handleRemove"></m-item>
   </ul>
 </template>
 
@@ -13,7 +11,10 @@ import MItem from '@/components/MItem'
 export default {
   name: 'm-list',
   data() {
+    return {
+    }
   },
+  props: ['toDoList', 'handleChange', 'handleRemove'],
   components: {
     MItem,
   },

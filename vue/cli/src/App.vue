@@ -3,9 +3,9 @@
     <div id="root">
       <div class="todo-container">
         <div class="todo-wrap">
-          <m-header></m-header>
-          <m-list></m-list>
-          <m-footer></m-footer>
+          <m-header :addItem="addItem"/>
+          <m-list :toDoList="toDoList" :handleChange="handleChange" :handleRemove="handleRemove"/>
+          <m-footer :toDoList="toDoList"/>
         </div>
       </div>
     </div>
@@ -22,8 +22,31 @@ export default {
   name: 'App',
   data() {
     return {
-      msg: '标题内容',
+      // 兄弟之间公共数据提升到父组件
+      toDoList: [
+        { id: '001', title: '抽烟', done: true },
+        { id: '002', title: '喝酒', done: true },
+        { id: '003', title: '烫头', done: false },
+      ],
     }
+  },
+  methods: {
+    // 将子组件传递给父组件的函数传递给子组件
+    addItem(item) {
+      this.toDoList.push(item)
+    },
+    handleChange(id) {
+      this.toDoList.forEach((item) => {
+        if (item.id === id) {
+          item.done = !item.done
+        }
+      })
+    },
+    handleRemove(id) {
+      this.toDoList = this.toDoList.filter((item) => {
+        return item.id !== id
+      })
+    },
   },
   components: {
     MHeader,
@@ -72,6 +95,7 @@ body {
   width: 600px;
   margin: 0 auto;
 }
+
 .todo-container .todo-wrap {
   padding: 10px;
   border: 1px solid #ddd;

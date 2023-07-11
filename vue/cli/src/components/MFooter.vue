@@ -1,10 +1,8 @@
 <template>
-  <div class="todo-footer">
-    <label>
-      <input type="checkbox"/>
-    </label>
-    <span> <span>已完成0</span> / 全部2 </span>
-    <button class="btn btn-danger">清除已完成任务</button>
+  <div class="todo-footer" v-show="toDoList.length">
+    <label> <input type="checkbox" :checked="isAll" @change="checkAll"/> </label>
+    <span> <span>已完成 {{numFinish}}</span> / 全部{{toDoList.length}} </span>
+    <button class="btn btn-danger" @click="clearSelect">清除已完成任务</button>
   </div>
 </template>
 
@@ -12,7 +10,37 @@
 export default {
   name: 'm-footer',
   data() {
+    return {}
   },
+  methods: {
+    clearSelect() {
+      this.toDoList.forEach((item) => {
+        item.done = false
+      })
+    },
+    checkAll(e) {
+      if(e.target.checked) {
+        this.toDoList.forEach((item) => {
+          item.done = true
+        })
+      } else {
+        this.toDoList.forEach((item) => {
+          item.done = false
+        })
+      }
+    }
+  },
+  computed: {
+    numFinish() {
+      return this.toDoList.reduce((pre, current)=>{
+        return pre + (current.done ? 1 : 0);
+      }, 0)
+    },
+    isAll() {
+      return this.toDoList.length > 0 && this.numFinish === this.toDoList.length
+    }
+  },
+  props: ['toDoList']
 }
 </script>
 

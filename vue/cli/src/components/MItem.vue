@@ -1,10 +1,10 @@
 <template>
   <li>
     <label>
-      <input type="checkbox"/>
-      <span>yyyy</span>
+      <input type="checkbox" :checked="todo.done" @change="change(todo.id)"/>
+      <span>{{todo.title}}</span>
     </label>
-    <button class="btn btn-danger" style="display:none">删除</button>
+    <button class="btn btn-danger" @click="remove(todo.id)">删除</button>
   </li>
 </template>
 
@@ -12,7 +12,19 @@
 export default {
   name: 'm-item',
   data() {
+    return {}
   },
+  methods: {
+    change(id) {
+      this.handleChange(id)
+    },
+    remove(id) {
+      if (confirm("确认删除吗?")) {
+        this.handleRemove(id)
+      }
+    }
+  },
+  props: ['todo', 'handleChange', 'handleRemove']
 }
 </script>
 
@@ -50,5 +62,13 @@ li:before {
 
 li:last-child {
   border-bottom: none;
+}
+
+li:hover {
+  background-color: #dddddd;
+}
+
+li:hover button {
+  display: block;
 }
 </style>
