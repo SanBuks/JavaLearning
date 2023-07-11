@@ -1,8 +1,8 @@
 <template>
   <div class="todo-footer" v-show="toDoList.length">
-    <label> <input type="checkbox" :checked="isAll" @change="checkAll"/> </label>
+    <label> <input type="checkbox" v-model="isAll"/> </label>
     <span> <span>已完成 {{numFinish}}</span> / 全部{{toDoList.length}} </span>
-    <button class="btn btn-danger" @click="clearSelect">清除已完成任务</button>
+    <button class="btn btn-danger" @click="clearFinished">清除已完成任务</button>
   </div>
 </template>
 
@@ -13,34 +13,26 @@ export default {
     return {}
   },
   methods: {
-    clearSelect() {
-      this.toDoList.forEach((item) => {
-        item.done = false
-      })
+    clearFinished() {
+      this.clearAll()
     },
-    checkAll(e) {
-      if(e.target.checked) {
-        this.toDoList.forEach((item) => {
-          item.done = true
-        })
-      } else {
-        this.toDoList.forEach((item) => {
-          item.done = false
-        })
-      }
-    }
   },
   computed: {
     numFinish() {
       return this.toDoList.reduce((pre, current)=>{
-        return pre + (current.done ? 1 : 0);
+        return pre + (current.done ? 1 : 0)
       }, 0)
     },
-    isAll() {
-      return this.toDoList.length > 0 && this.numFinish === this.toDoList.length
-    }
+    isAll: {
+      get() {
+        return this.toDoList.length > 0 && this.numFinish === this.toDoList.length
+      },
+      set(value) {
+        this.checkAll(value)
+      },
+    },
   },
-  props: ['toDoList']
+  props: ['toDoList', 'checkAll', 'clearAll']
 }
 </script>
 

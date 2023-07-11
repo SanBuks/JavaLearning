@@ -83,7 +83,6 @@ module.exports = defineConfig({ // defineConfig 提供语义支持
 })
 ```
 
-
 # 02 基础属性
 ## 2.1 ref 
 ```js
@@ -227,7 +226,6 @@ Vue.use(plugin, '1', '2', '3')
 <!-- App 中 scoped 会限制全局样式的使用, 不推荐使用 -->
 ```
 
-
 # 03 ToDoList 案例
 ## 3.1 组件化编码流程
 - 拆分静态组件：组件要按照功能点拆分，命名不要与 html 元素冲突
@@ -243,7 +241,7 @@ Vue.use(plugin, '1', '2', '3')
 - 子组件传递数据给父组件 调用父组件传递给子组件的函数, 数据在哪改变数据的函数在哪
 
 ## 3.3 注意
-- 不要直接修改 props 中的数据, 而是通过传递过来的函数进行修改
+- 不要直接修改 props 中的数据, 而是通过传递过来的函数进行修改, 如果数据是对象, 可以修改对象属性但不推荐
 ```vue
 <!-- todo 是 props 中的数据, props 中数据是只读数据, 只做浅层监视, 不建议使用 -->
 <input type="checkbox" v-model="todo.done"/>
@@ -255,3 +253,46 @@ return this.toDoList.reduce((pre, current)=>{
   return pre + (current.done ? 1 : 0);
 }, 0)
 ```
+
+- 当一个空间的对象既涉及到查询又涉及到事件修改可以考虑计算属性
+```js
+let vm = {
+  //..
+  computed: {
+    isAll: {
+      get() {
+        return this.toDoList.length > 0 && this.numFinish === this.toDoList.length
+      },
+      set(value) {
+        this.checkAll(value)
+      },
+    },
+  }
+}
+```
+
+- 注意使用 WebStorage 来保存刷新过程中的数据
+
+# 04 WebStorage
+- 区别
+  - SessionStorage 存储的内容会随着浏览器窗口关闭而消失
+  - LocalStorage 存储的内容，需要手动清除才会消失
+- 相关API
+  - xxxStorage.setItem('key', 'value') 值为字符串
+  - xxxStorage.getItem('key') 
+  - xxxStorage.removeItem('key')
+  - xxxStorage.clear() 
+
+
+# 05 组件自定义事件
+## 5.1 定义事件
+```html
+<!-- vc 上绑定一个事件 -->
+<m-school ref="school" v-on:getName="demo"></m-school>
+
+this.$emit("getName")
+```
+
+## 5.2 解绑销毁
+## 5.3 function / => this 的问题
+
