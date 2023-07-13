@@ -285,14 +285,73 @@ let vm = {
 
 
 # 05 组件自定义事件
-## 5.1 定义事件
+## 5.1 定义事件与触发
 ```html
-<!-- vc 上绑定一个事件 -->
+<!-- vc 上绑定一个自定义事件 -->
 <m-school ref="school" v-on:getName="demo"></m-school>
 
-this.$emit("getName")
+<!-- vc 上绑定一个自定义事件 简写形式 -->
+<m-school ref="school" @getName="demo"></m-school>
+
+<!-- vc 上绑定一个原生事件 -->
+<m-school ref="school" @click.native="demo"></m-school>
+
+<!-- vc 上通过 $on / $once 绑定事件 -->
+<m-school ref="school"/>
+
+<script>
+let vm = {
+  // ..
+  mounted() {
+    setTimeout(() => {
+      // 绑定事件
+      this.$refs['school'].$once('getNameEvent', this.getSchoolName)
+    }, 3000)
+  },
+}
+
+
+let vm = {
+  // .. 
+  methods: {
+    foo() {
+      // 组件触发本组件的事件 getName, 调用父组件的回调函数并传递 参数 param1, param2
+      this.$emit("getName", param1, param2)
+    }
+  }
+}
+</script>
 ```
 
-## 5.2 解绑销毁
-## 5.3 function / => this 的问题
+## 5.2 解绑与销毁
+```html
+<script>
+function unbind() {
+  // 解绑集合中的事件
+  this.$off(["getNameEvent"])
+  // 全部解绑
+  this.$off()
+}  
+// 销毁 vm / vc 后, 对应实例的所有自定义事件失效
+</script>
+```
 
+## 5.3 function / => this 的问题
+```js
+let vm = {
+  // ..
+  mounted() {
+    setTimeout(() => {
+      // 组件 school 事件 'getNameEvent' 绑定回调, 回调函数中的 this 会出现问题
+      this.$refs['school'].$once('getNameEvent', 
+                                 this.getSchoolName)
+      // 1. 谁触发事件, 回调函数的 this 指向谁, function () { ... } 中 this 指向组件, 所以必须使用如下方法改变 this
+      // 2. 这里必须使用 this.xxx, methods 保证 this 改变并指向 methods 所属实例
+      // 3. 这里必须使用 ()=>{} 保证没有 this, 向外作用域(mounted)寻找 , 赋予 this 并指向所属实例
+    }, 3000)
+  },
+}
+```
+
+# 06 事件总线
+- vm.__porto__

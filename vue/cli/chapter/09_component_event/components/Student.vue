@@ -2,7 +2,6 @@
   <div class="demo">
     <h2>学生名称：{{ mName }}</h2>
     <h2>学生年龄：{{ mAge }}</h2>
-    <button> 把学生</button>
   </div>
 </template>
 
