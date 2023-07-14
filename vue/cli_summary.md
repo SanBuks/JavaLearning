@@ -254,7 +254,7 @@ return this.toDoList.reduce((pre, current)=>{
 }, 0)
 ```
 
-- 当一个空间的对象既涉及到查询又涉及到事件修改可以考虑计算属性
+- 当一个空间的对象既涉及到查询又涉及到修改可以考虑计算属性
 ```js
 let vm = {
   //..
@@ -282,7 +282,6 @@ let vm = {
   - xxxStorage.getItem('key') 
   - xxxStorage.removeItem('key')
   - xxxStorage.clear() 
-
 
 # 05 组件自定义事件
 ## 5.1 定义事件与触发
@@ -354,4 +353,90 @@ let vm = {
 ```
 
 # 06 事件总线
-- vm.__porto__
+## 6.1 基础要求
+  - 所有对象都能访问 (对象赋予在 vm 原型上)
+  - 有 $on, $once 等相关函数 (是一个 vc 实例)
+```js
+// x 是事件总线对象
+let Event = Vue.extend({})
+Vue.prototype.x = new Event()
+
+let vc1 = {
+  mounted() {
+    // 在 x 上增加事件 transferStuInfo, 回调所属 vc1 
+    this.x.$on("transferStuInfo", this.getInfo)
+  },
+}
+
+let vc2 = {
+  methods: {
+    transferInfo() {
+      // 让 x 触发事件 transferStuInfo, 并传递 vc2 的参数
+      this.x.$emit("transferStuInfo", this.mName)
+    }
+  }
+}
+```
+
+## 6.2 bus 对象
+- 由于整个应用中 vm Root 是唯一的, 自然可以充当总线事件对象
+```js
+new Vue({
+  el: '#app',
+  render: h => h(App),
+  beforeCreate() {
+    // Vue 原型上有一个 事件总线对象为自身 vm 实例
+    // 事件总线对象 以 bus 命名
+    Vue.prototype.$bus = this
+  }
+})
+
+// 注意解绑
+let Vc = Vue.extends({
+  beforeDestroy() {
+  // 在销毁前解绑, 因为 事件在 bus 上, vc 销毁不会将事件销毁
+  this.$bus.$off(EVENT_NAME)
+ }
+})
+```
+
+## 6.3 订阅与发布
+```js
+// 安装 npm i pubsub
+
+let Vc = Vue.extends({
+  mounted() {
+    // 通过 pubId 销毁
+    // 第一个参数为 消息名, 之后为传递参数
+    // 注意使用 ()=>{} 或 methods 中定义函数 作为回调函数避免 this 问题
+    this.pubId = pubsub.subscribe('transferInfo', (msgName, stuName)=>{
+      console.log(msgName)
+      console.log(stuName)
+      console.log(this)
+      this.mStuName = stuName
+    })
+  },
+  beforeDestroy() {
+    // 取消订阅
+    pubsub.unsubscribe(this.pubId)
+  },
+})
+
+let Vc = Vue.extends({
+  methods: {
+    // 发布消息
+    transferInfo() {
+      pubsub.publish('transferInfo', this.mName)
+    }
+  }
+})
+```
+
+# 07 编辑框实现注意
+```js
+// 1. item 附带 isEdit 状态
+// 2. input 和 span 根据 isEdit 条件显示
+// 3. 编辑时 判断属性是否存在, 不存在追加代理属性
+// 4. @blur 事件
+// 5. focus 事件, 更新 DOM 后的操作需要使用 $nextTick
+```

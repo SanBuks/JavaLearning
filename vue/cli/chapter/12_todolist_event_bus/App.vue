@@ -17,7 +17,7 @@
 import MHeader from '@/components/MHeader'
 import MList from '@/components/MList'
 import MFooter from '@/components/MFooter'
-import { EVENT_CHANGE_ITEM, EVENT_REMOVE_ITEM, EVENT_EDIT_ITEM } from '@/constants/bus_event_name'
+import { EVENT_CHANGE_ITEM, EVENT_REMOVE_ITEM } from '@/constants/bus_event_name'
 
 export default {
   name: 'App',
@@ -34,12 +34,10 @@ export default {
   mounted() {
     this.$bus.$on(EVENT_CHANGE_ITEM, this.handleChange)
     this.$bus.$on(EVENT_REMOVE_ITEM, this.handleRemove)
-    this.$bus.$on(EVENT_EDIT_ITEM, this.handleEdit)
   },
   beforeDestroy() {
     this.$bus.$off(EVENT_CHANGE_ITEM)
     this.$bus.$off(EVENT_REMOVE_ITEM)
-    this.$bus.$off(EVENT_EDIT_ITEM)
   },
   methods: {
     addItem(item) {
@@ -55,13 +53,6 @@ export default {
     handleRemove(id) {
       this.toDoList = this.toDoList.filter((item) => {
         return item.id !== id
-      })
-    },
-    handleEdit(id, title) {
-      this.toDoList.forEach((item) => {
-        if (item.id === id) {
-          item.title = title
-        }
       })
     },
     checkAll(status) {
@@ -122,16 +113,6 @@ body {
   background-color: #bd362f;
 }
 
-.btn-edit {
-  color: #fff;
-  background-color: #88d2a9;
-  border: 1px solid #04600c;
-  margin-right: 5px;
-}
-.btn-edit:hover {
-  color: #fff;
-  background-color: #04600c;
-}
 .btn:focus {
   outline: none;
 }

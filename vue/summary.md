@@ -6,3 +6,8 @@
   - model: js-object (data)
   - view: model (template)
   - view-model: vue-object (data-binding, dom-listener)
+
+- html/css
+- js BOM/DOM/advance/es6
+- ajax/promise/axios
+- vue/react/angular

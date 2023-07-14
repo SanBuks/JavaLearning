@@ -2,7 +2,7 @@
   <div class="demo">
     <h2>学生名称：{{ mName }}</h2>
     <h2>学生年龄：{{ mAge }}</h2>
-    <button> 把学生</button>
+    <button @click="transferInfo"> 把学生信息传递给 学校</button>
   </div>
 </template>
 
@@ -16,6 +16,12 @@ export default {
       mAge: 12,
     }
   },
+  methods: {
+    transferInfo() {
+      // this.x.$emit("transferStuInfo", this.mName)
+      this.$bus.$emit("transferStuInfo", this.mName)
+    }
+  }
 }
 </script>
 
