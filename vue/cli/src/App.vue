@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <custom-form v-model='msg'/>
-    <button @click="show">显示 父组件的 信息</button>
+  <div id="app" @click="hide">
+    <custom-form v-model='msg' v-show='open' ref="form"/>
+    <button @click.stop="show">显示 父组件的 信息</button>
   </div>
 </template>
 
@@ -12,12 +12,17 @@ export default {
   name: 'App',
   data() {
     return {
-      msg: 'default'
+      msg: 'default',
+      open: true
     }
   },
   methods: {
     show() {
       console.log(this.msg)
+    },
+    hide() {
+      this.open = false
+      console.log(this.open)
     }
   },
   components: {
