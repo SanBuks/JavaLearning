@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 
 public class FileCreate {
-
     @Test
+    // 路径创建文件
     public void filePathCreate() {
         // 绝对路径创建文件: 盘符 + 文件路径
         File absoulteFile = new File("D:/test.txt");
@@ -22,8 +22,8 @@ public class FileCreate {
         File absoluteDir = new File("D:/test");
         System.out.println(absoluteDir.getAbsolutePath());
     }
-
     @Test
+    // 指定父目录创建文件
     public void fileParentCreate() {
         // 指定父目录 创建文件
         // 绝对
