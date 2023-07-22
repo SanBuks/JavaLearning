@@ -29,4 +29,26 @@
   - public boolean createNewFile(): 创建文件, 若文件存在, 则不创建, 返回false
   - public boolean mkdir(): 创建文件目录, 如果此文件目录存在, 就不创建, 如果此文件目录的上层目录不存在, 也不创建
   - public boolean mkdirs(): 创建文件目录, 如果上层文件目录不存在, 一并创建
-  - public boolean delete(): 删除文件或者文件夹(文件目录内不能包含文件或者文件目录)
+  - public boolean delete(): 删除文件或目录(文件目录内不能包含文件或目录)
+
+# 02 IO流
+## 2.1 概念
+- 输入输出: 站在内存(输入则向内存输入, 输出则向内存外输出)
+- 字节/字符流: 随着时间, 数据以字节/字符为单位被不断有序消耗和产生的队列结构
+- 节点流: 直接从数据源和目标端读取数据
+- 处理流: 连接到已存在的节点流/处理流上, 提供增强功能(装饰)
+- 框架(4 大基类): 
+  - InputStream(字节)
+  - OutputStream(字节)
+  - Reader(字符)
+  - Writer(字符)
+## 2.2 文件字符流
+- 新建和关闭都需要 try-catch
+- FileReader fr = new FileReader(sourceFile); 
+- FileWriter fw = new FileWriter(targetFile, false);
+- fw.write(byteArray, off, count);
+- fr.read(byteArray);
+- fw.close();
+- fr.close();
+## 2.3 文件字节流
+- 同上, 注意字符流无法处理非文本文件, 引文字符流读取数据时会根据字符集进行转换, 写入时会发生数据丢失
