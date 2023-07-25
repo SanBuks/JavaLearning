@@ -24,6 +24,7 @@
 
     <modules>
         <module>ch01-stream</module>
+        <module>ch04-net</module>
     </modules>
 
     <dependencies>
