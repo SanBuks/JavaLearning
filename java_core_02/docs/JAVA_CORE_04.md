@@ -23,7 +23,6 @@
   - 为什么要有 seq?
   - 为什么不能两次握手? 
   - 服务端如何产生 seq?
-  - 
 ## 1.7 四次挥手
 
 # 02. InetAddress
@@ -36,35 +35,22 @@
 - public String getHostName(): 获取此 IP 地址的主机名
 - public boolean isReachable(int timeout): 测试是否可以达到该地址
 
-## 套接字
-- Socket(String host, int port) 
-- getOutputStream() 
-- getInputStream() 
-```java
-try {
-    // 创建空套接字, 防止建立初始连接无限超时
-    Socket s = new Socket();
-    // 创建新连接, 设置超时时间
-    s.connect(new InetSocketAddress("time-a.nist.gov", 13), 10000);
-    // 获取输入流
-    InputStream is = s.getInputStream();
-    // 绑定输入流
-    Scanner sc = new Scanner(is, "UTF-8");
-    // 输入每一行
-    while (sc.hasNextLine()) {
-        String str = sc.nextLine();
-        System.out.println(str);
-    }
-    if (s.isConnected()) {
-        // 关闭套接字
-        s.close();
-    }
-} catch (InterruptedIOException ie) {
-    ie.printStackTrace();
-} catch (Exception e) {
-    e.printStackTrace();
-}
-```
+# 03 套接字
+## 3.1 通信模型
+- Server:
+  - ServerSocket(int port) 监听窗口 
+  - Socket accept() 程序阻塞, 接受建立连接请求, 返回应答建立连接
+  - getOutputStream(), getInputStream() 数据双向传递
+  - 关闭 socket
+- Client:
+  - Socket(InetAddress address, int port) 
+  - 发送连接请求, 建立连接
+  - getOutputStream(), getInputStream() 数据双向传递
+  - 关闭 socket
+## 3.2 注意事项
+- ByteArrayOutputStream 汇总接受的文本数据防止截断产生乱码
+- socket.shutdownOutput() 注意及时关闭输出, 防止通信陷入僵持
+## 3.3 
 
 ## URL
 ```java
