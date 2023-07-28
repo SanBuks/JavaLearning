@@ -1,4 +1,4 @@
-package org.learn.java.concurrency.d_more_safety;
+package org.learn.java.concurrency.d_safe_singleton;
 
 import org.junit.jupiter.api.Test;
 
