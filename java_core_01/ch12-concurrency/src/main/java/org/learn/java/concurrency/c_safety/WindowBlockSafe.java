@@ -1,8 +1,11 @@
 package org.learn.java.concurrency.c_safety;
 
-public class WindowSafe implements Runnable {
-    private int ticketNum = 100;
-    private final Object obj = new Object();
+class WindowBlockLock implements Runnable {
+    private int ticketNum = 100;                     // Runnable
+ // private static int ticketNum = 100;              // Thread
+
+    private final Object obj = new Object();         // Runnable
+    private final static Object sobj = new Object(); // Thread
 
     @Override
     public void run() {
@@ -13,12 +16,11 @@ public class WindowSafe implements Runnable {
                 e.printStackTrace();
             }
 
-//            synchronized (this) {            // Runnable 可以
-//            synchronized(WindowSafe.class) { // Thread 需要 static obj
-            synchronized (obj) {
+//            synchronized (this) {                  // Runnable
+//            synchronized(WindowBlockLock.class) {  // Thread
+            synchronized (obj) {                     // Thread 需要 sobj
                 if (ticketNum > 0) {
                     try {
-                        // 多个线程都进入阻塞后出现错误, 有效状态与实际状态不同步
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -33,9 +35,9 @@ public class WindowSafe implements Runnable {
     }
 }
 
-class WindowSafeTest {
+public class WindowBlockSafe {
     public static void main(String[] args) {
-        WindowSafe a = new WindowSafe();
+        WindowBlockLock a = new WindowBlockLock();
 
         Thread t1 = new Thread(a, "01");
         Thread t2 = new Thread(a, "02");

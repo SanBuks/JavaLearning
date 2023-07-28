@@ -2,7 +2,7 @@ package org.learn.java.concurrency.b_func;
 
 public class ThreadFunc {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         A a = new A("A");
         B b = new B("B");
 
@@ -13,16 +13,21 @@ public class ThreadFunc {
         b.setPriority(Thread.MIN_PRIORITY);
 
         a.setB(b);
+
+        b.start(); // b 需要先执行, 才能及时阻塞到
         a.start();
-        b.start();
+
+        a.join();
+        b.join();
     }
 }
 
 class A extends Thread {
+    // 需要等待的线程
     private Thread b;
 
     A(String name) {
-        this.setName(name);
+        super(name);
     }
 
     @Override
@@ -30,8 +35,7 @@ class A extends Thread {
         for (int i = 0; i < 1000; ++i) {
             System.out.println(Thread.currentThread().getName() + " - " + i);
             try {
-                // a 阻塞 直到 b 结束
-                b.join();
+                b.join();  // a 阻塞 直到 b 结束
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -46,7 +50,7 @@ class A extends Thread {
 
 class B extends Thread {
     B(String name) {
-        this.setName(name);
+        super(name);
     }
     @Override
     public void run() {

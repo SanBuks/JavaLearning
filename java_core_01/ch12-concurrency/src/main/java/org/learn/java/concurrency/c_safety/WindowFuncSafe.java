@@ -1,24 +1,18 @@
 package org.learn.java.concurrency.c_safety;
 
-public class WindowFuncSafe implements Runnable {
-    private int ticketNum = 100;
+class WindowFuncLock implements Runnable {
+    private int ticketNum = 1000;
 
     @Override
     public void run() {
         while (sell());
     }
 
-    // Runnable 方式下 默认锁为 this
-    // Thread   方式下 默认锁为 this, 需要是 static 方法, this 指向 Clazz.class
+    // Runnable 方式下 用普通方法, 默认锁为 obj
+    // Thread   方式下 用static方法, 默认锁为 Clazz.class
     private synchronized boolean sell() {
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (ticketNum > 0) {
             try {
-                // 多个线程都进入阻塞后出现错误, 有效状态与实际状态不同步
                 Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -32,9 +26,9 @@ public class WindowFuncSafe implements Runnable {
     }
 }
 
-class WindowFuncSafeTest {
+public class WindowFuncSafe {
     public static void main(String[] args) {
-        WindowSafe a = new WindowSafe();
+        WindowFuncLock a = new WindowFuncLock();
 
         Thread t1 = new Thread(a, "01");
         Thread t2 = new Thread(a, "02");

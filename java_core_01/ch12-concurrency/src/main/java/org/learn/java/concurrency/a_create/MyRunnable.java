@@ -18,7 +18,8 @@ class MyRunnableTest {
         MyRunnable myRunnable2 = new MyRunnable();
 
         Thread thread1 = new Thread(myRunnable1, "001");
-        // 2. 外部 myRunnable1 可以复用, 以对象为单位进行数据共享
+        // 2. 外部 myRunnable对象 可以复用, 以对象为单位进行数据共享,
+        //    也可以通过类声明对象共享方法
         Thread thread11 = new Thread(myRunnable1, "011");
         Thread thread2 = new Thread(myRunnable2, "002");
 

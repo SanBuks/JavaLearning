@@ -1,24 +1,25 @@
 package org.learn.java.concurrency.c_safety;
 
-public class Window implements Runnable {
+class Window implements Runnable {
     private int ticketNum = 100;
 
     @Override
     public void run() {
         while (ticketNum > 0) {
             try {
-                // 多个线程都进入阻塞后出现错误, 有效状态与实际状态不同步
+                // 错误点1: 多个线程判断正确后进入阻塞, 更新不及时, 发生票不够问题
                 Thread.sleep(10);
+                System.out.println(Thread.currentThread().getName() + " - " + ticketNum);
+                // 错误点2: 打印后未及时减票, 更新不及时, 发生重票问题
+                --ticketNum;
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
-            System.out.println(Thread.currentThread().getName() + " - " + ticketNum);
-            --ticketNum;
         }
     }
 }
 
-class WindowTest {
+public class WindowProblem {
     public static void main(String[] args) {
         Window a = new Window();
 
