@@ -4,23 +4,29 @@ import java.util.concurrent.locks.ReentrantLock;
 
 class Window implements Runnable {
     private int ticketNum = 100;
+    // 这里是 static 还是 non-static 看 runnable 的用法
     private final ReentrantLock lock = new ReentrantLock();
 
     @Override
     public void run() {
-        lock.lock();
-        try {
-            while (ticketNum > 0) {
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+        while (true) {
+            lock.lock();
+            try {
+                if (ticketNum > 0) {
+                    try {
+                        Thread.sleep(10);
+                        Thread.yield();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println(Thread.currentThread().getName() + " - " + ticketNum);
+                    --ticketNum;
+                } else {
+                    break;
                 }
-                System.out.println(Thread.currentThread().getName() + " - " + ticketNum);
-                --ticketNum;
+            } finally {
+                lock.unlock();
             }
-        } finally {
-            lock.unlock();
         }
     }
 }
