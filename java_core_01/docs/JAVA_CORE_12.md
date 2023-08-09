@@ -109,3 +109,8 @@
 
 # 7. 其他创建方式
 ## 7.1 Callable
+- Callable 特点: call 为泛型方法, 有返回值, 方法标签可以抛出异常
+- 使用 Callable: 通过 FutureTask 和 Thread 类使用, 主线程通过 futureTask.get() 获取分线程结果则存在阻塞
+## 7.2 Executors
+- Executors 创建线程池
+- threadPoolExecutor 强转并通过 execute, submit 执行 runnable

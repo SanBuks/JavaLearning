@@ -11,7 +11,7 @@ public class Clerk {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        } else {  // 增加 else 避免让多个唤醒线程产生错误情况
+        } else {  // 增加 else 控制语句, 让多个线程从 wait 处恢复执行需要重新加锁 (因为正常状态发生了改变)
             ++productNum;
             System.out.println(name + "生产了 第" + productNum + "个 产品!");
             notifyAll();
