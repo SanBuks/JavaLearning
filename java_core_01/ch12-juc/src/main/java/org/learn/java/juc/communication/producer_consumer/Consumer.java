@@ -1,9 +1,9 @@
-package producer_consumer;
+package org.learn.java.juc.communication.producer_consumer;
 
-public class Producer extends Thread {
+public class Consumer extends Thread {
     Clerk clerk;
 
-    public Producer(String name, Clerk clerk) {
+    public Consumer(String name, Clerk clerk) {
         super(name);
         this.clerk = clerk;
     }
@@ -12,11 +12,11 @@ public class Producer extends Thread {
     public void run() {
         while (true) {
             try {
-                sleep(300);
+                sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            clerk.addProduct(getName());
+            clerk.remove(getName());
         }
     }
 }
