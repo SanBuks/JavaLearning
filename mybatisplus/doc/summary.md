@@ -17,9 +17,35 @@
 - 构建工程:
   - 构建 Spring-Boot 工程
   - 引入依赖
-  - 配置 Mysql, MP
+  - 配置 Mysql 连接
+  - 配置 MP 日志
+  - 加入 @MapperScan 注解
 
-## 条件构造器
+## 1.2 基础 CRUD
+- BaseMapper 中的 CRUD
+- IService, ServiceImpl 实现
+
+## 1.3 注解
+- @TableName / global-config.db-config.table-prefix (默认前缀)
+- @TableId(value="id", type= IdType.ASSIGN_ID) 设定实体类与字段映射, 主键生成策略
+- @TableField 设定实体类属性和字段映射
+- global-config.db-config.id-type (默认主键生成策略)
+- @TableLogic 设定逻辑删除字段
+
+## 1.4 雪花算法
+- 应对数据库分表, 垂直分表/水平分表
+- 对于水平分表
+  - 自增: 需要选取分表数量, 扩充平滑, 分布不均
+  - 取模: 需要选取表数量, 均匀, 扩充需要重新分布
+  - 雪花: 时间自增排序, ID 不重复性, 效率高
+- 数据分布: 长度共64bit, 
+  - 首先是一个符号位, 一般是0
+  - 41bit时间截(毫秒级)，存储的是时间截的差值（当前时间截 - 开始时间截)，结果约等于69.73年
+  - 10bit作为机器的ID（5个bit是数据中心，5个bit的机器ID，可以部署在1024个节点）
+  - 12bit作为毫秒内的流水号（意味着每个节点在每毫秒可以产生 4096 个 ID）
+ 
+# 2. 条件构造器
+## 2.1 基础类
 - Wrapper ： 条件构造抽象类，最顶端父类
   - AbstractWrapper ： 用于查询条件封装，生成 sql 的 where 条件
     - QueryWrapper ： 查询条件封装
@@ -27,3 +53,8 @@
     - AbstractLambdaWrapper ： 使用Lambda 语法
       - LambdaQueryWrapper ：用于Lambda语法使用的查询Wrapper
       - LambdaUpdateWrapper ： Lambda 更新封装Wrapper
+- QueryWrapper 
+  - 组合查询条件, 删除条件, 修改条件 
+  - 逻辑组合 or(i->i.ge().lt())
+  - 限定字段 select
+  - 子查询
