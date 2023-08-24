@@ -1,10 +1,7 @@
 package org.learn.java.concurrency.e_deadlock;
 
-import org.junit.jupiter.api.Test;
-
 public class SourceDeadLock {
-    @Test
-    public void deadLockTest() {
+    public static void main(String [] args) {
         // 对资源竞争类型的死锁
         StringBuilder s1 = new StringBuilder();
         StringBuilder s2 = new StringBuilder();

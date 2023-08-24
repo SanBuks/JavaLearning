@@ -3,7 +3,7 @@ package org.learn.java.concurrency.g_communication;
 import org.junit.jupiter.api.Test;
 
 class PrintNumber implements Runnable {
-    private int num = 100;
+    private int num = 20;
 
     @Override
     public void run() {
@@ -20,8 +20,6 @@ class PrintNumber implements Runnable {
 
                 System.out.println(Thread.currentThread().getName() + " : " + num--);
 
-                // 如果不及时退出会出现一个线程永远处于等待状态不会唤醒
-                if (num <= 0) break;
 
                 try {
                     // 进入等待状态, 释放同步监视器
@@ -30,6 +28,8 @@ class PrintNumber implements Runnable {
                     throw new RuntimeException(e);
                 }
             }
+            // 退出循环后需要唤醒其他等待线程, 注意分叉逻辑及时唤醒其他线程
+            notify();
         }
     }
 }

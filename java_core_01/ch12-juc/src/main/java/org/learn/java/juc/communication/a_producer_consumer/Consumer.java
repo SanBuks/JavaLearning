@@ -1,4 +1,4 @@
-package org.learn.java.juc.communication.producer_consumer;
+package org.learn.java.juc.communication.a_producer_consumer;
 
 public class Consumer extends Thread {
     Clerk clerk;

@@ -30,12 +30,50 @@
 
 # 2. 线程间通信
 ## 虚假唤醒问题
-- 一般的步骤: 
-  - 判断(不符合则等待)
-  - 操作
-  - 通知其他线程
-- 需要 if-else 或 while 包裹判断, 防止虚假换新产生错误 
-- Condition.await / Condition.signalAll
+- 一般的通信步骤: 
+```java
+class Foo {
+    public synchronized void foo() {
+        // 1. 判断(不符合则等待)
+        while (!condition) {  // while 包裹判断, 防止虚假换新产生错误 
+            wait();
+        }
+        // 2. 操作
+        // do something
+        // 3. 通知其他线程
+        notifyAll();
+    }
+}
+```
+- lock 使用需要通过 Condition.await / Condition.signalAll 进行等待与唤醒
 
 ## 定制化通信 
 - 通过标志位通信不同的线程
+- condition + flag 
+
+# 3. 并发安全集合
+- 出现并发问题: ConcurrentModificationException
+- Collections.synchronizedList
+- Vector (锁)
+- CopyOnWriteArrayList (写时复制, 读没加锁)
+- CopyOnWriteArraySet<>();
+- new ConcurrentHashMap<>();
+
+# 4. 锁相关
+- 类型锁和对象锁不是同一把锁
+- 公平锁/非公平锁 new ReentrantLock(true/false);
+  - 非公平锁: 产生线程饿死, 效率高
+  - 公平锁: 加锁时会询问是否有线程在排队, 效率较低
+- 可重入锁, 递归锁(ReentrantLock / synchronized): 外层获取则内层不用再获取, 但是必须要释放  
+- 查看是否存在死锁: jps -l, jstack id
+
+# 5. Callable 与 辅助类
+- Runnable 接口有一个实现类为 FutureTask<T>, 可以接受 Callable 对象进行构造
+- CountDownLatch: 检测线程对状态的影响
+- CyclicBarrier: 条件完成触发线程执行
+- Semaphore: 资源竞争
+
+# 6. 读写锁
+- 悲观锁: 先取锁来阻塞其他线程, 确保自己独占资源, 效率低, 应用于并发程度高, 一致性要求高情景(Synchronized/ReentrantLock)
+- 乐观锁: 版本号或时间戳机制, 提交会核对版本号并解决冲突, 应用于并发程度低, 性能要求高情景(Atomic/CAS)
+- 表锁: 锁整张表, 行锁: 锁某一行, 会容易出现死锁

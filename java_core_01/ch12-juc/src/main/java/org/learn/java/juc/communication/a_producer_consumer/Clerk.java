@@ -1,4 +1,4 @@
-package org.learn.java.juc.communication.producer_consumer;
+package org.learn.java.juc.communication.a_producer_consumer;
 
 import org.junit.jupiter.api.Test;
 
