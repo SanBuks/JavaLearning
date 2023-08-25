@@ -15,8 +15,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>16</source>
-                    <target>16</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -26,6 +26,7 @@
         <module>ch05-inheritance</module>
         <module>ch12-concurrency</module>
         <module>ch12-juc</module>
+        <module>ch12-juc-advance</module>
     </modules>
 
     <dependencies>

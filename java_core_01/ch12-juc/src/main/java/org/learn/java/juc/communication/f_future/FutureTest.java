@@ -2,6 +2,7 @@ package org.learn.java.juc.communication.f_future;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 public class FutureTest {

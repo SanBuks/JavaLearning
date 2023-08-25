@@ -180,6 +180,10 @@ class Foo{
 }
 ```
 
+- submit 和 execute 的区别
+  - 返回值类型: submit() 方法返回一个 Future 对象, 而 execute() 方法没有返回值
+  - 执行方式: submit() 方法可以接受 Callable 和 Runnable 两种类型的任务, 而 execute() 方法只能接受 Runnable 类型的任务
+
 ![](image/JUC_线程池执行过程.png)
 
 # 9. 分支合并与异步
