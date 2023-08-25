@@ -2,14 +2,13 @@ package org.learn.java.juc.communication.f_future;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class FutureTest {
 
     @Test
     public void test() throws Exception {
-        FutureTask<Integer> task = new FutureTask(()->{
+        FutureTask<Integer> task = new FutureTask<>(()->{
             System.out.println(Thread.currentThread().getName());
             int sum = 0;
             for (int i = 0; i < 1000; ++i) {

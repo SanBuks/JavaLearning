@@ -85,3 +85,109 @@ class Foo {
 - 缺点: 锁饥饿, 一直读不写
 - 锁降级: 写锁降级, 读操作通常比写操作更频繁, 可以提供更好的性能和并发性, 
 - 锁升级: 读不能升为写, 会存在一致性问题
+
+# 7. 阻塞队列
+## 7.1 分类
+- ArrayBlockingQueue: 基于数组实现的有界阻塞队列
+- LinkedBlockingDeque: 基于链表实现的可选有界/无界阻塞队列
+- PriorityBlockingQueue: 基于优先级堆实现的无界阻塞队列
+- DelayQueue: 基于优先级堆实现的延迟阻塞队列
+- LinkedTransferQueue: 基于链表的传输队列, 可以支持直接传输元素
+- SynchronousQueue: 一个不存储元素的阻塞队列, 每个插入操作必须等待一个对应的移除操作
+
+## 7.2 方法 
+- 异常: add-remove
+- 返回值: offer-poll
+- 阻塞: put-take
+- 返回值-阻塞: offer-poll-time
+
+# 8. 线程池
+## 8.1 基本概念
+- 作用: 分配线程, 调度任务
+- 优势: 降低成本, 提高响应, 增加管理功能
+- 分类: 
+  - ExecutorService pool = Executors.newFixedThreadPool(3); 固定线程个数
+  - ExecutorService pool = Executors.newSingleThreadExecutor(); 一个线程
+  - ExecutorService pool = Executors.newCachedThreadPool(); 可动态扩容
+
+## 8.2 构造参数
+```java
+class Example {
+  /**
+   * @param corePoolSize the number of threads to keep in the pool, even
+   *        if they are idle, unless {@code allowCoreThreadTimeOut} is set
+   * @param maximumPoolSize the maximum number of threads to allow in the
+   *        pool
+   * @param keepAliveTime when the number of threads is greater than
+   *        the core, this is the maximum time that excess idle threads
+   *        will wait for new tasks before terminating.
+   * @param unit the time unit for the {@code keepAliveTime} argument
+   * @param workQueue the queue to use for holding tasks before they are
+   *        executed.  This queue will hold only the {@code Runnable}
+   *        tasks submitted by the {@code execute} method.
+   * @param threadFactory the factory to use when the executor
+   *        creates a new thread
+   * @param handler the handler to use when execution is blocked
+   *        because the thread bounds and queue capacities are reached
+   */
+  public ThreadPoolExecutor(int corePoolSize,
+                            int maximumPoolSize,
+                            long keepAliveTime,
+                            TimeUnit unit,
+                            BlockingQueue<Runnable> workQueue,
+                            ThreadFactory threadFactory,
+                            RejectedExecutionHandler handler) {
+  }
+}
+```
+
+## 8.3 执行
+- 过程
+  - 执行 execute 时才创建核心线程
+  - 首先分配核心线程
+  - 再放入阻塞队列, 等待
+  - 再新建非核心线程分配
+  - 执行拒绝策略
+- 拒绝策略 
+  - ThreadPoolExecutor.AbortPolicy: 默认, 抛异常
+  - ThreadPoolExecutor.CallerRunsPolicy: 交由提交任务的线程自己执行, 从而避免任务丢失
+  - ThreadPoolExecutor.DiscardOldestPolicy: 抛弃阻塞队列中等待最久的
+  - ThreadPoolExecutor.DiscardPolicy: 不做任何处理
+- 使用
+```java
+class Foo{
+  public void test() throws InterruptedException {
+    final int num = 5;
+    ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 4, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(1), 
+                                                         Executors.defaultThreadFactory(),
+                                                         new ThreadPoolExecutor.AbortPolicy());
+    CountDownLatch latch = new CountDownLatch(num);
+
+    for (int i = 0; i < num; ++i) {
+      executor.execute(() -> {
+        try {
+          Thread.sleep(4000);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+        System.out.println(Thread.currentThread().getName());
+        latch.countDown();
+      });
+    }
+    latch.await();
+    executor.shutdown();
+  }
+}
+```
+
+![](image/JUC_线程池执行过程.png)
+
+# 9. 分支合并与异步
+- 分支合并步骤:
+  - 继承 RecursiveTask<Integer>
+  - 通过 XXXTask task = new XXXTask()
+  - task.fork(), task.join() 获取结果并汇集
+- CompletableFuture:
+  - CompletableFuture.runAsync() 无返回值线程
+  - CompletableFuture.supplyAsync() 有返回值线程
+  - integerFuture.whenComplete((result, ex) -> {}) 设定回调
