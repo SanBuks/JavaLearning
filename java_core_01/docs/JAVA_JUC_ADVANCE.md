@@ -15,12 +15,55 @@
   - 有用接口较少
 - 需要改进的地方:
   - 回调通知
-  - 线程池 + 异步
-  - 组合
+  - 结合线程池
+  - 任务阶段组合
   - 最快结果筛选
 
 ## CompletableFuture
-- 观察者模式, 任务完成后通知监听一方
-- 
+### 基础原理
+- 设计原理: 观察者模式, 任务完成后通知监听一方
+- 类架构: 
+  - `public class CompletableFuture<T> implements Future<T>, CompletionStage<T>` 
+  - CompletionStage: 代表异步任务中的一个步骤, 类似 Linux 操作系统中的管道符  
+- 创建方法:  
+  - `public static CompletableFuture<Void> runAsync(Runnable runnable, Executor executor)`
+  - `public static <U> CompletableFuture<U> supplyAsync(Supplier<U> supplier, Executor executor)` 
+- 组合方法:
+  - `public CompletableFuture<T> whenComplete(BiConsumer<? super T, ? super Throwable> action)`
+  - `public CompletableFuture<T> exceptionally(Function<Throwable, ? extends T> fn)`
+ 
+### 流式调用
+- 函数式接口:
 
+![](image/JUC_function.png)
 
+- join 和 get 区别:
+  - join 不抛异常, get 抛异常
+  - join 不可中断, get 可中断
+
+- 使用案例
+```java
+class Foo {
+    static public List<String> calcProductsAsync(List<Mall> malls, String productName) {
+        return malls
+                .stream()
+                .map((mall) -> CompletableFuture.supplyAsync(
+                        () -> String.format("%s in %s price: %f", productName, mall.getName(), mall.calc(productName))))
+                .toList()
+                .stream()
+                .map(CompletableFuture::join)
+                .collect(Collectors.toList());
+    }
+}
+```
+
+### 步骤接口分类
+- 获取结果:
+  - `public T get() throws InterruptedException, ExecutionException`
+  - `public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException`
+  - `public T join()`
+  - `public T getNow(T valueIfAbsent)`
+- 结果处理: 
+  - `public <U> CompletableFuture<U> thenApply( Function<? super T,? extends U> fn)`
+  - 
+    
