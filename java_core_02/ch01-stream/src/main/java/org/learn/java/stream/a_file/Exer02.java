@@ -1,9 +1,8 @@
-package org.learn.java.stream.file;
+package org.learn.java.stream.a_file;
 
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Arrays;
 
 // 判断指定目录下是否有后缀名为.jpg的文件，如果有，就输出该文件名称

@@ -1,4 +1,4 @@
-package org.learn.java.stream.file;
+package org.learn.java.stream.a_file;
 
 import org.junit.jupiter.api.Test;
 

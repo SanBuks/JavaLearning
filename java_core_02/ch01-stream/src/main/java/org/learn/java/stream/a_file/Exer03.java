@@ -1,4 +1,4 @@
-package org.learn.java.stream.file;
+package org.learn.java.stream.a_file;
 
 //遍历指定文件目录下的所有文件的名称，包括子文件目录中的文件。
 //拓展1：删除指定文件目录及其下的所有文件
@@ -35,7 +35,9 @@ public class Exer03 {
             return;
         }
 
+        // 从底层至上层删除目录
         Stack<File> dirs = new Stack<>();
+        // BFS-queue
         Queue<File> queue = new ArrayDeque<>();
         queue.add(file);
         while (!queue.isEmpty()) {
