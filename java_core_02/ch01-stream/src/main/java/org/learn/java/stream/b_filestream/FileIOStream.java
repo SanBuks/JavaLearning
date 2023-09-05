@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 
-public class FileInputOutputStream {
+// 文件字节流
+public class FileIOStream {
 
     @Test
     // 拷贝一个文件文本或非文本文件

@@ -41,13 +41,50 @@
   - OutputStream(字节)
   - Reader(字符)
   - Writer(字符)
-## 2.2 文件字符流
+## 2.2 文件流
+### 文件字符流
+- 只能处理文本文件: 文本编码格式读->(UTF-16 内部表示)->指定编码方式写, 非文本文件会在转化过程中出现数据丢失
+- 创建读写器:
+  - FileReader fr = new FileReader(sourceFile); 
+  - FileWriter fw = new FileWriter(targetFile, false);
+- 多种形式读:
+  - int c = fr.read();
+  - fr.read(charArray);
+- 多种形式写:
+  - fw.write(charArray, off, count);
+  - fw.write(string);
+  - fw.write(int);
 - 新建和关闭都需要 try-catch
-- FileReader fr = new FileReader(sourceFile); 
-- FileWriter fw = new FileWriter(targetFile, false);
-- fw.write(byteArray, off, count);
-- fr.read(byteArray);
-- fw.close();
-- fr.close();
-## 2.3 文件字节流
-- 同上, 注意字符流无法处理非文本文件, 引文字符流读取数据时会根据字符集进行转换, 写入时会发生数据丢失
+  - fw.close();
+  - fr.close();
+### 文件字节流
+- 同上
+- FileInputStream fis;
+- FileOutputStream fos;
+
+## 2.3 处理流
+### 缓冲流
+- 内部建立: DEFAULT_BUFFER_SIZE 大小缓冲区, 减少了 IO 的多次调用, 效率更高
+- 缓冲字节流
+  - BufferedInputStream 
+  - BufferedOutputStream
+- 缓冲字符流
+  - BufferedWriter: bw.flush(); bw.newLine();
+  - BufferedReader: br.readLine()
+
+### 转换流
+- 实现文本的编码与解码
+- InputStreamReader: 输入型字节流->输入型字符流
+- OutputStreamWriter: 输出型字符流->输出型字节流
+
+### 数据流
+- 机器无关方式读写 Java 的基本类型 + String
+- DataOutputStream 以 UTF-16-BE 字节形式写入
+- DataInputStream 以 UTF-16-BE 字节形式读取为内存中数据
+
+### 对象流
+- 转换为平台无关的二进制流, 用于保存和网络传输
+- 继承 Serializable 接口, static final long serialVersionUID = 1L;
+- 如果不声明全局常量serialVersionUID, 系统会自动声明生成一个针对于当前类的serialVersionUID
+- 如果修改此类的话, 会导致serialVersionUID变化, 进而导致反序列化时, 出现InvalidClassException异常
+- 类中的属性如果声明为transient或static, 则不会实现序列化

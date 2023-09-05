@@ -7,16 +7,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileWriterReader {
+// 文件字符流
+public class FileWR {
     @Test
-    // 每次读取一个字符
+    // 每次读取一个字符, char 以 UTF-16 形式表示
     void fileReadSimpleTest() {
         File file = new File("poem.txt");
         try (FileReader fr = new FileReader(file)) {
             int c;
             while ((c = fr.read()) != -1) {
+                // 如果截断 '𐐷' \U10437 (\uD801\uDC37) 只打印高字节则表示为 ?
                 System.out.print((char)c);
-                break;
             }
         } catch (IOException ex) {
             ex.printStackTrace();
