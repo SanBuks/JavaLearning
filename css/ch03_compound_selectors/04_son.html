@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>子选择器</title>
+    <style>
+        div>a {
+            color: sandybrown;
+        }
+        div>p>a {
+            color: brown;
+        }
+        div>.type {
+            color: yellowgreen;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <a href="#"> a-tag </a>
+        <a href="#"> b-tag </a>
+        <a href="#"> c-tag </a>
+        <p>
+            <a href="#"> d-tag </a>
+            <div>
+                <a href="#" class="type"> d-tag </a>
+            </div>
+        </p>
+    </div>
+</body>
+</html>

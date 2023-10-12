@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>属性选择器</title>
+    <style>
+        /*** 第一种 只选择属性 ***/
+        /*[title] {*/
+        /*    color: yellowgreen;*/
+        /*}*/
+
+        /*** 第二种 属性+值 ***/
+        /*div[title="title01"] {*/
+        /*    color: sandybrown;*/
+        /*}*/
+
+        /*** 第三种 属性+以值开头 ***/
+        /*div[title^="t"] {*/
+        /*    color: sandybrown;*/
+        /*}*/
+
+        /*** 第四种 属性+以值结尾 ***/
+        /*div[title$="1"] {*/
+        /*    color: sandybrown;*/
+        /*}*/
+
+        /*** 第五种 属性+包含值 ***/
+        div[title*="0"] {
+            color: sandybrown;
+        }
+    </style>
+</head>
+<body>
+    <div title="title01"> 属性选择器01 </div>
+    <div title="title02"> 属性选择器02 </div>
+    <div title="title03"> 属性选择器03 </div>
+</body>
+</html>

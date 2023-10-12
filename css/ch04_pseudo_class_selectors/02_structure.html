@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结构伪类选择器</title>
+    <style>
+        /* 结构一 结构二 */
+        /* div 中所有的孩子中的第一个孩子 且是 p 元素 */
+        /*div > p:first-child {*/
+        /*    color: red;*/
+        /*}*/
+
+        /* 结构三 */
+        /* div 中所有 p 后代, 且是父亲的第一个孩子(父亲是谁没有关系) */
+        div p:first-child {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 结构一 -->
+<!--    <div>-->
+<!--        <p>John: 99 Pt</p>-->
+<!--        <p>James: 98 Pt</p>-->
+<!--        <p>Ted: 97 Pt</p>-->
+<!--    </div>-->
+
+<!-- 结构二 无元素变色 -->
+<!--    <div>-->
+<!--        <span>John: 99 Pt</span>-->
+<!--        <p>James: 98 Pt</p>-->
+<!--        <p>Ted: 97 Pt</p>-->
+<!--    </div>-->
+
+<!-- 结构三 -->
+<div>
+    <p>John: 99 Pt</p>
+    <marquee>
+        <p>James: 98 Pt</p>
+    </marquee>
+    <p>Ted: 97 Pt</p>
+</div>
+
+</body>
+</html>

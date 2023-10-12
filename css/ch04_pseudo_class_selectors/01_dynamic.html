@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态伪类选择器</title>
+    <style>
+        /* 顺序 影响 叠加状态时 应用样式的效果 */
+        /* 标准顺序 lvha */
+        a:link {
+            color: aqua;
+        }
+        a:visited {
+            color: grey;
+        }
+        a:hover {
+            color: sandybrown;
+        }
+        a:active {
+            color: yellowgreen;
+        }
+
+        input:focus,
+        select:focus {
+            color: yellowgreen;
+            background-color: aliceblue;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="#"> link01 </a>
+    <br>
+    <input type="text">
+    <br>
+    <select>
+        <option>01</option>
+        <option>02</option>
+        <option>03</option>
+    </select>
+</body>
+</html>

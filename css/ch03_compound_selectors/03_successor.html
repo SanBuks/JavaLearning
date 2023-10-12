@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后代选择器</title>
+    <style>
+        ul li {
+            color: blue;
+        }
+        ol li {
+            color: green;
+        }
+        ul li a {
+            color: black;
+        }
+        ol li a {
+            color: black;
+        }
+
+        ul.sub li {
+            color: brown;
+        }
+        ul.sub li .subsub {
+            color: sandybrown;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>Action01</li>
+        <li>Action02</li>
+        <li>Action03</li>
+        <li>
+            <a href="#"> a-tag </a>
+        </li>
+    </ul>
+    <hr>
+    <ol>
+        <li>Action04</li>
+        <li>Action05</li>
+        <li>Action06</li>
+        <li>
+            <a href="#"> b-tag </a>
+        </li>
+    </ol>
+    <hr>
+    <ul class="sub">
+        <li>Action07</li>
+        <li>Action08</li>
+        <li>Action09</li>
+        <li>
+            <a href="#" class="subsub"> c-tag </a>
+        </li>
+    </ul>
+
+
+
+</body>
+</html>
