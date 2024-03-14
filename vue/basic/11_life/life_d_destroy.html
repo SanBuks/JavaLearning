@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>销毁</title>
+  <script src="../../js/vue.js"></script>
+</head>
+<body>
+
+<div id="root">
+  <h1>当前值 {{n}} </h1>
+  <button @click="add">点击 + 1 </button>
+  <button @click="bye">点击 销毁 </button>
+</div>
+</body>
+
+<script>
+  new Vue({
+    el: '#root',
+    data: {
+      n: 1.0
+    },
+    // 初始化完成, 数据监测和反应式未初始化
+    beforeCreate() {
+      console.log('beforeCreate', this)
+      // debugger;
+    },
+    // 数据监测和反应式完成, 虚拟 DOM 生成, 未解析模板
+    created() {
+      console.log('created', this)
+      // debugger;
+    },
+    // 模板解析完成, 虚拟 DOM 未挂载, 对 DOM 的操作无效
+    beforeMount() {
+      console.log('beforeMount', this)
+      // debugger;
+    },
+    // 挂载完毕(只一次), 并将 dom 节点 存放再 $el 中
+    // 存在 el, 会对 包含 el 在内进行解析
+    // 不存在 el, 只会将 template 的根组件放在指定组件下
+    mounted(){
+      console.log('mounted', this)
+      console.log('$el', this.$el)
+      // debugger;
+    },
+    // 数据已经更新, 页面没有更新
+    beforeUpdate() {
+      console.log('beforeUpdate', this)
+      console.log(this.n)
+      // debugger;
+    },
+    // 完成了新虚拟DOM与旧的比较和渲染更新
+    updated() {
+      console.log('updated', this)
+      // debugger;
+    },
+    // 收尾工作
+    beforeDestroy() {
+      console.log('beforeDestroy', this)
+      // 虽然有效但是不会再重新渲染
+      this.add()
+    },
+    destroyed() {
+      console.log('destroy', this)
+    },
+    methods: {
+      add() {
+        this.n++
+      },
+      bye() {
+        // 销毁 vm, 清理子组件, 解绑指令, 解绑自定义事件监听器(原生的仍然在)
+        this.$destroy()
+      }
+    },
+  })
+</script>
+</html>

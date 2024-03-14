@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>自定义指令</title>
+  <script src="../../js/vue.js"></script>
+</head>
+<body>
+
+<div id="root">
+  <h2> 当前 n 值是 <span v-text="value"></span> </h2>
+  <h2> 十倍放大的 n 值是 <span v-big="value"></span></h2>
+  <hr/>
+  <input type="text" v-find-bind:value="value" @click="click">
+  <button @click="click">点击增加数值</button>
+</div>
+
+<div id="root2">
+  <input type="text" v-find-bind-global:value="value" @click="click">
+  <button @click="click">点击增加数值</button>
+</div>
+</body>
+
+<script>
+  // 5.定义全局指令
+  Vue.directive('find-bind-global', {
+    // 绑定时调用
+    bind(element, binding) {
+      // 4. this 指向 window
+      console.log(this)
+      element.value = binding.value * 10
+    },
+    // 插入时调用
+    inserted(element, binding) {
+      element.focus();
+    },
+    // 更新时调用
+    update(element, binding) {
+      element.value = binding.value * 10
+      element.focus();
+    }
+  })
+
+  new Vue({
+    el: '#root',
+    data: {
+      value: 1
+    },
+    methods: {
+      click() {
+        ++this.value
+      }
+    },
+    directives: {
+      // 1. 成功绑定会调用 (一上来就绑定)
+      // 2. 指令所在模板重新解析时会调用
+      big(element, binding) {
+        // console.log(element)  // 真实 dom 元素
+        // console.log(binding)  // 指令 与 元素 的绑定关系
+        element.innerText = binding.value * 10
+      },
+      // fbind(element, binding) {
+      //   element.value = binding.value * 10
+      //   // 绑定成功时, 元素未放入页面, 所以首次就不会 focus
+      //   element.focus();
+      // }
+      // 3. 指令命名与钩子函数
+      "find-bind": {
+        // 绑定时调用
+        bind(element, binding) {
+          // 4. this 指向 window
+          console.log(this)
+          element.value = binding.value * 10
+        },
+        // 插入时调用
+        inserted(element, binding) {
+          element.focus();
+        },
+        // 更新时调用
+        update(element, binding) {
+          element.value = binding.value * 10
+          element.focus();
+        }
+      }
+    }
+  })
+
+  new Vue({
+    el: "#root2",
+    data: {
+      value: 1
+    },
+    methods: {
+      click() {
+        ++this.value
+      }
+    }
+  })
+</script>
+</html>
