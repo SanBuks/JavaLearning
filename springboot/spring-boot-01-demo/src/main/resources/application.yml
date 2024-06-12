@@ -1,0 +1,19 @@
+server:
+  port: 8083
+complex:
+  date: 2010/10/10 12:12:12
+  array:
+    - 123
+    - 321
+  array-user:
+    - id: 123
+      name: john
+    - id: 321
+      name: 'mike\n 不转义'
+  map:
+    key1:
+      id: 123
+      name: "john\n 转义"
+    key2:
+      id: 321
+      name: mike

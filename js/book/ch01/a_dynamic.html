@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态加载脚本</title>
+    <script>
+        // 创建 script 节点
+        const script = document.createElement('script')
+        // src 属性
+        script.src = "./a_hi.js"
+        // 明确同步加载
+        script.async = false
+        // 添加到 DOM 中
+        document.head.appendChild(script)
+    </script>
+</head>
+<body>
+
+</body>
+</html>

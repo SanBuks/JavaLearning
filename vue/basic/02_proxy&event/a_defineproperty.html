@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>defineProperty 使用方法</title>
+</head>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<body>
+<div id="root">
+</div>
+
+<script type="text/javascript">
+  let txt = 'abc'   // 双向绑定的值
+  let obj = {}      // 代理的对象
+
+  // #1. 配置设置项
+  let opt = {
+    // value: 'default-text',  // 属性值, 与 get,set 冲突
+    // writable: true,         // 可写, 与 get,set 冲突
+    enumerable: true,          // 可枚举
+    configurable: true,        // 可以被删除
+    // 读取属性时, 调用 get 函数
+    get() {
+      return txt
+    },
+    // 设置属性时, 调用 set 函数
+    set(value) {
+      txt = value
+    },
+  }
+
+  // #2. 被代理的对象, 通过 Object defineProperty 设定动态属性
+  Object.defineProperty(obj, 'name', opt,)
+  obj.name = 'txt-changed'
+  console.log(txt)
+  txt = 'txt-reset'      // 设置 name
+  console.log(obj.name)  // 获取 name 时自动调用 get
+</script>
+</body>
+</html>

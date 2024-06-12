@@ -1,0 +1,15 @@
+{
+	"pages": [
+		{ "path": "pages/ch01/a_basic" },
+		{ "path": "pages/ch01/b_container" },
+		{ "path": "pages/ch01/c_media" }
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "UniApp-Learning ",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F5F5F5FF",
+		"enablePullDownRefresh": true
+	},
+	"uniIdRouter": {}
+}

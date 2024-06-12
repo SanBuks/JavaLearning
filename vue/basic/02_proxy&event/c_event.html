@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>事件</title>
+</head>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<body>
+<div id="button_container">
+  <h1>{{name}}</h1>
+
+  <!-- #1. v-on 可以简写为 @, 后接方法 -->
+  <button v-on:click="showInfo1" type="button">点击</button>
+  <!-- #2. 方法参数为 param1, $event, param2... ($占位标记为事件对象) -->
+  <button @click="showInfo2(22, $event)" type="button">点击</button>
+</div>
+</body>
+
+<script type="text/javascript">
+  new Vue({
+    el: '#button_container',
+    data: {
+      name: '识别',
+    },
+    methods: {                          // #3. methods 不做数据劫持和代理
+      showInfo1(event) {
+        console.log(this);              // #4. this 是 VM, 如果是箭头函数则是 Window
+        console.log(this.name)          //     一定要用 this 访问 data 成员
+        alert(event.target.innerHTML);  // #5. event 可以获取事件发生对象
+      },
+      showInfo2(number, event) {
+        console.log(number);
+        console.log(event.target.innerHTML);
+      },
+    },
+  });
+</script>
+</html>

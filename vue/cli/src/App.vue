@@ -1,12 +1,14 @@
 <template>
   <div id="app" @click="hide">
-    <custom-form v-model='msg' v-show='open' ref="form"/>
-    <button @click.stop="show">显示 父组件的 信息</button>
+    <draw></draw>
+<!--    <custom-form v-model='msg' v-show='open' ref="form"/>-->
+<!--    <button @click.stop="show">显示 父组件的 信息</button>-->
   </div>
 </template>
 
 <script>
 import CustomForm from '@/components/CustomForm'
+import Draw from '@/components/Painter'
 
 export default {
   name: 'App',
@@ -27,6 +29,7 @@ export default {
   },
   components: {
     CustomForm,
+    Draw,
   },
 }
 </script>

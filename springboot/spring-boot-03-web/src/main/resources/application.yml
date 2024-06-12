@@ -1,0 +1,13 @@
+server:
+  port: 8083
+spring:
+  mvc:
+  web:
+  servlet:
+    multipart:
+
+logging:
+  pattern:
+    dateformat: 'yyyy-MM-dd HH:mm:ss.SSS' # 日期格式
+  file:
+    name: demo.log                         # 文件名(优先)

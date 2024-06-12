@@ -1,0 +1,25 @@
+server:
+  port: 8083
+
+logging:
+  pattern:
+    dateformat: 'yyyy-MM-dd HH:mm:ss.SSS' # 日期格式
+  # console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} ===> %msg%n'
+  group: # 分组
+    abc: org.learn.java.boot, org.learn.java.boot.controller
+  level:
+    root: 'info'                           # 默认
+#   org.learn.java.boot.controller: 'info' # 按包调整
+    abc: 'info'                            # 按组调整
+    sql: 'info'                            # sql 相关组
+    web: 'info'                            # web 相关组
+  file:
+#    name: demo.log                         # 文件名(优先)
+    path: D:\\                             # 文件路径
+  logback:
+    rollingpolicy:
+      file-name-pattern: '${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz'  # 日志存档的文件名格式
+      clean-history-on-start: false                          # 应用启动时是否清除以前存档
+      max-file-size: 100KB                                   # 存档前，每个日志文件的最大大小
+      total-size-cap: 20MB                                   # 日志文件被删除之前，可以容纳的最大大小
+      max-history: 7                                         # 日志文件保存的最大天数

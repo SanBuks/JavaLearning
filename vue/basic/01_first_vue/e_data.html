@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>两种 data 配置写法</title>
+</head>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<body>
+<div id="root">
+  <label>
+    <input id="input1" type="text" :value="name"></input>
+    <input id="input2" type="text" v-model="name"></input>
+  </label>
+</div>
+
+<script type="text/javascript">
+  new Vue({
+    el: "#root",
+    // #1. 配置写法
+    // data: {
+    //   name: "text",
+    // }
+    // #2 函数式写法
+    data: function () {   // lambda: this 是 window 实例 (不要用)
+      console.log(this);  // 函数式: this 是 vue 实例
+      return {
+        name: 'text',
+      };
+    },
+  })
+</script>
+</body>
+</html>

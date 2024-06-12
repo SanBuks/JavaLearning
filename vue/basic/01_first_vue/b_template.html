@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法</title>
+</head>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<body>
+<div id="root">
+  <!-- #1 插值语法, 主要用于行内 -->
+  <h1>{{name}}</h1>
+
+  <!-- #2 指令语法, 如 v-bind 指令等 -->
+  <!--    绑定标签属性, 字符串内解析为也为 JS 表达式 -->
+  <a v-bind:href="address" v-bind:x="x">网址</a>
+  <!--    v-bind 简写为 ':' -->
+  <a :href="school.name" :x="Date.now()">网址</a>
+</div>
+
+<script type="text/javascript">
+  new Vue({
+    el: '#root',
+    data: {
+      x: 'aaa',
+      name: 'text',
+      school: {
+        name: 'text',
+      },
+      address: 'www.abcdefg.com',
+    },
+  });
+</script>
+</body>
+</html>

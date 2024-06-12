@@ -1,0 +1,37 @@
+# ch01-ch02
+- JavaScript 需要宿主环境
+  - EMCAScript(ISO/IEC-16262): 语言核心
+  - DOM(DOM-Level 3): 网页交互
+  - BOM(HTML5): 浏览器交互
+- script 标签(body后)
+  - type: 默认为 text/javascript 
+  - src: 文件源地址可以是 get 路径, 请求不受同源限制, 返回执行受同源限制, 同时会忽略行内 js 代码
+  - crossorigin：配置请求的 CORS 设置, 默认不使用
+      - crossorigin="anonymous" 请求不必设置凭据标志
+      - crossorigin="use-credentials" 请求设置凭据标志, 意味着出站请求会包含凭据
+  - integrity：允许比对接收到的资源和指定的加密签名以验证子资源完整性
+  - defer: 立即下载, 但延迟执行(DOMContentLoaded 事件之前)
+  - async: 推荐不用, 脚本执行顺序之间没有依赖, 加载界面和脚本下载之间没有依赖, 异步脚本不应该在加载期间修改 DOM
+  - 动态加载: #a_dynamic.html
+- noscript: 不支持 javascript 的替代
+- 文档模式: <!DOCTYPE html> (开启标准模式) 还有准标准模式和混在模式(不声明 DOCTYPE)
+
+# ch03
+- var 存在提升, 声明会自动生成在作用域顶部, 函数作用域, 可以多次声明, 全局作用域声明作为 window 属性
+- let 不存在提升, 存在暂时性死区, 块作用域, 不可以多次声明, 全局作用域声明不作为 window 属性
+- typeof x === 'undefined' 判断是否声明
+- 数据类型:
+  - Undefined: undefined, typeof 为 undefined 的变量有可能声明未初始化或者根本未声明, 一般显示赋值
+  - Null: null, 空对象指针, type of null == "object", undefined 值派生而来, 用来初始化对象
+  - Boolean: true/false, "" == false, Nan == false
+  - Number: 整数/浮点数, 尽量转化为整数, Number(), parseInt(), parseFloat()
+  - String: str.length, 值不可变, toString(), String(value) 
+    - 字符串模板与插值
+    - 标签函数, String.raw, array.raw
+  - Symbol: symbol, 唯一不可变, 确保对象属性不会冲突
+  - Object: 调用 Object() 创建对象
+    - constructor(): 用于创建当前对象的函数, 比如 Object() 
+    - hasOwnProperty(propertyName): 用于判断当前对象实例(不是原型)上是否存在给定的属性
+    - isPrototypeOf(object): 用于判断当前对象是否为另一个对象的原型
+    - propertyIsEnumerable(propertyName): 用于判断给定的属性是否可以使用 for-in语句枚举
+    - toString(): 返回对象的字符串表示

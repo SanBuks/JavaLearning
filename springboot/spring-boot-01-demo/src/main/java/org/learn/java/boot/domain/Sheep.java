@@ -1,0 +1,13 @@
+package org.learn.java.boot.domain;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+// bean + enableproperties 方式
+@Data
+@ConfigurationProperties(prefix = "sheep")
+public class Sheep {
+    private Long id;
+    private String name;
+}

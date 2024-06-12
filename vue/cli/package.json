@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "element-ui": "^2.15.13",
+    "element-ui": "^2.15.14",
     "nanoid": "^4.0.2",
     "pubsub": "^3.2.1",
     "pubsub-js": "^1.9.4",
@@ -20,7 +20,7 @@
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
+    "@vue/cli-service": "^3.3.1",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "vue-template-compiler": "^2.6.14"

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>插值语法</title>
+</head>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<body>
+
+<div id="container">
+  <!--- #5. 插值语法, 可以运用 JS 表达式 -->
+  <h1>{{name.toUpperCase()}}, {{age + 10}}, {{Date.now()}}</h1>
+</div>
+
+<script type="text/javascript">
+  Vue.config.productionTip = false;  // #1. 配置 config 阻止开发提示
+
+  const vm = new Vue({               // #2. 如果不使用 new 关键字调用构造函数, this 指向全局变量, 属性会被构造在全局对象中, 产生错误
+    el: '#container',                // #3. vm 实例绑定容器 root, 两者必须一一对应, 如果容器已被接管则不会再被接管
+    data: {                          // #4. data 对象存储数据, 供绑定容器插值使用
+      name: 'john',
+      age: 10,
+    },
+  });
+</script>
+
+</body>
+</html>
