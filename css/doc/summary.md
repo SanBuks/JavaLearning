@@ -1,4 +1,4 @@
-# ch01 basic
+# ch01 基础
 - CSS: 层叠样式表
 - 行内样式: `<h1 style="color: red; font-size: 60px">` 
 - 内部样式: 
@@ -21,7 +21,7 @@
 - 元素选择器: `p { ... }`
 - 类名选择器: `.clazz { ... }`
 - ID选择器: `#ant { ... }`
-- 优先级 ID > 类 > 元素
+- 优先级: 行内 > ID > 类 > 元素 > 通配, 同类型就近原则
         
 # ch03 复合选择器
 - 交集选择器: `.a.b.c { ... }` 
@@ -44,5 +44,41 @@
 - 动态伪类: `xxx:xxxStatus` 
   - `<a>`保持 link, visited, hover, active 顺序
   - `<input>` 输入类才有 focus 
-- 结构伪类: `x:first-child x:first-child-of-type(n)` ...
-  - `div>p:first-child`
+- 结构伪类: `x:first-child`
+  - 限定含义并不严格遵照从左至右, first-child 强调所有孩子 
+  - `div>p:first-child`: 等价于 `div>:first-child` 且是 `<p>` 的元素
+  - `div p:first-child`: 等价于 `div :first-child` 且是 `<p>` 的元素
+- 序数类型伪类: 
+  - first-child         (所有孩子中第一个)
+  - last-child          (所有孩子中最后一个)
+  - nth-child(3)        (所有孩子中第 n 个)
+  - nth-child(even)     (所有孩子中第 偶数 个)
+  - nth-child(odd)      (所有孩子中第 奇数 个)
+  - nth-child(-n+5)     (所有孩子中前 5 个)
+  - nth-child(an+b)     (所有孩子中从 b 个开始每次加上 a)
+  - first-of-type       (同类型中第一个)
+  - nth-of-type(2)      (同类型中第 n 个)
+  - nth-last-of-type(2) (同类型中倒数第 n 个)
+- 其他伪类: 
+  - only-child 
+  - only-of-type
+  - root
+  - empty
+- 否定伪类: `div>p:not(:nth-child(odd))` (注意否定的选择器在 not 情境中, 可以简化)
+- UI 伪类: 
+  - input:checked :checkbox, radio 无法调试背景色
+  - input:enabled / input:disabeld
+- 目标伪类: `input:target{...}` (根据锚点变化)
+- 伪元素: 元素中的特殊位置
+  - `div::first-letter` 
+  - `div::first-line` 
+  - `div::first-line`
+  - `input::placeholder` 
+  - `p::before { content: ".." }`
+  - `p::after { content: ".." }`
+- 复杂选择器优先级: 
+  - id; 类, 伪类, 属性; 元素, 伪元素
+  - `div>p>span:first-child(1)`: (0, 1, 3)
+  - `.con p>span:first-of-type`: (0, 2, 2)
+  - 同优先级: 就近原则
+- `span { color: blue !important; }`

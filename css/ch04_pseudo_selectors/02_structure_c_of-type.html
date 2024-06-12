@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结构伪类选择器: of-type</title>
+    <style>
+        /* div 所有 p 孩子中第一个元素 */
+        /*div>p:first-of-type {*/
+        /*    color: red;*/
+        /*}*/
+
+        /* div 所有 p 孩子中第 3 个元素 */
+        /*div>p:nth-of-type(3) {*/
+        /*    color: blue;*/
+        /*}*/
+
+        /* div 所有 p 孩子中倒数第 3 个元素 */
+        div>p:nth-last-of-type(3) {
+            color: blue;
+        }
+
+    </style>
+</head>
+<body>
+
+<div>
+    <p>John: 99 Pt</p>
+    <span>Span-James: 98 Pt</span>
+    <p>James: 98 Pt</p>
+    <span>Span-John: 93 Pt</span>
+    <p>Ted: 97 Pt</p>
+    <span>Span-Pet: 88 Pt</span>
+    <p>Cryon: 97 Pt</p>
+    <span>Span-Koi: 98 Pt</span>
+    <p>Pet: 97 Pt</p>
+    <p>Brown: 97 Pt</p>
+</div>
+
+</body>
+</html>

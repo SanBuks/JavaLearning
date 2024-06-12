@@ -2,35 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>结构伪类选择器02</title>
+    <title>结构伪类选择器: nth-child</title>
     <style>
-        /* 第一个子元素 */
+        /* div 所有孩子中第一个元素, 且是 p  */
         /*div>p:first-child {*/
         /*    color: red;*/
         /*}*/
-        /* 最后一个子元素 */
+        /* div 所有孩子中最后一个元素, 且是 p  */
         /*div>p:last-child {*/
         /*    color: green;*/
         /*}*/
-        /* 第 3 个子元素 */
+        /* div 所有孩子中第 3 个元素, 且是 p  */
         /*div>p:nth-child(3) {*/
         /*    color: blue;*/
         /*}*/
-        /* 偶数个子元素 */
+        /* div 所有孩子中第偶数个元素, 且是 p */
         /*div>p:nth-child(even) {*/
         /*    color: darkcyan;*/
         /*}*/
-
-        /* 同一类别 <p> 的倒数第三个 */
-        div>p:nth-last-of-type(3) {
-            color: bisque
+        /* div 所有孩子中前 5 个元素, 且是 p */
+        /*div>p:nth-child(-n+5) {*/
+        /*    color: darkcyan;*/
+        /*}*/
+        /* div 所有孩子中倒数第 4 个元素, 且是 p */
+        div>p:nth-last-child(4) {
+            color: darkcyan;
         }
-
-        /* 其他类型
-           1. p:only-of-type 唯一类型
-           2. :root          根元素
-           3. :empty         内部不嵌套元素
-        */
     </style>
 </head>
 <body>
