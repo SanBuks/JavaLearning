@@ -23,6 +23,7 @@
 - ID选择器: `#ant { ... }`
 - 优先级: 行内 > ID > 类 > 元素 > 通配, 同类型就近原则
         
+
 # ch03 复合选择器
 - 交集选择器: `.a.b.c { ... }` 
   - 如果有元素选择器，必须使用元素选择器开头
@@ -82,3 +83,43 @@
   - `.con p>span:first-of-type`: (0, 2, 2)
   - 同优先级: 就近原则
 - `span { color: blue !important; }`
+
+# ch05 属性
+- 三大特性
+  - 层叠性: 样式冲突
+  - 继承性: 优先继承父与祖先某些样式
+  - 优先级: !important > 行内 > 行内 > ID > 类 > 元素 > 通配 > 继承, 分组选择器分别计算
+- 颜色: 命名, rgba(255,255,255,1), hexa, hsla
+- 字体: 
+  - font-style: 是否斜体
+  - font-weight: 字体粗细, 分档
+  - font-size: 指定字体框的高度, 字体实际大小可能较大, 位置可能偏下
+  - font-family: 字体, serif 表示衬线
+  - font: 复合属性, 按上述顺序添加
+- 文本: 
+  - letter-spacing: 字母间隔 
+  - word-spacing: 字间隔(空格识别)
+  - text-decoration: 比如 `none dotted`, 可以用来去除 a 标签样式
+  - text-indent: 缩进
+  - text-align: 对齐方式
+  - line-height: 行高, 一般为 1.5 倍字体大小
+    - 过小可能
+      - 与 font-size 一致可能重叠
+      - 字体框始终居中行内空间, 过小上部分会被遮挡
+    - 可继承 
+  - height: 整体高度 
+    - height < line-height: 会产生溢出
+    - height = line-height: 会垂直居中
+    - height = null: height = numRow x line-height
+    - height = 0, 背景色会消失
+  - 垂直对齐: 
+    - 顶部: 默认 
+    - 中部: line-height = height
+    - 底部: line-height = height*2-font-size-x, x 是字体基线的偏移距离
+  - vertical-align: 
+    - top: 置顶; bottom: 置底; middle: 子元素与父元素的 X 字符中心点对齐
+    - 如果子元素高度超父元素的行高, 可能会改变父元素的位置来达到对齐效果
+    - 只修饰元素, 只修饰行内元素
+    - 可以修饰表格中的 `<td>`
+- 列表:
+  -  

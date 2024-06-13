@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文本</title>
+    <style>
+        .text1 {
+            letter-spacing: 2px;
+            word-spacing: 5px;
+            font-size: 20px;
+            /* 百分比, 小数, 像素, normal*/
+            line-height: 1.5;
+        }
+        .text2 {
+            font-size: 10px;
+            line-height: 20px;
+            height: 20px;
+        }
+        .text3 {
+            background-color: yellowgreen;
+            /* (height*2) - font-size - x */
+            line-height: 168px;
+            font-size: 30px;
+            height: 100px;
+        }
+
+        .text4 {
+            background-color: yellowgreen;
+            font-size: 60px;
+            height: 100px;
+        }
+        span {
+            background-color: lightblue;
+            font-size: 20px;
+            /*vertical-align: top;*/
+            /* 所指元素与父元素 字母 x 的 中部对齐 */
+            vertical-align: middle;
+            /*vertical-align: baseline;*/
+            /*vertical-align: bottom;*/
+        }
+
+    </style>
+</head>
+<body>
+    <p class="text1"> 你好 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti dolores eligendi laudantium rem sed? Reiciendis!</p>
+
+    <p class="text2"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad architecto aspernatur aut </p>
+
+    <p class="text3"> Lorem ipsum dolor sit amet</p>
+    <p class="text4"> Lorem ipsum dolor <span>sitX</span>xamet</p>
+</body>
+</html>
