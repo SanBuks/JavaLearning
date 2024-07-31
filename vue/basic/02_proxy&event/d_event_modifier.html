@@ -11,23 +11,27 @@
 
   <!-- #1. 阻止默认行为 -->
   <a href="https://www.sss.com" @click.prevent="showInfoPrevent" type="button">防止跳转</a>
+
   <!-- #2. 阻止事件冒泡, 同时可以组合额外修饰符 -->
   <!--     事件冒泡是指当某个元素上的事件被触发时, 该事件将会沿着 DOM 树向上传播, 直到传播到最外层的元素为止 -->
   <div class="demo1" id="div1" @click="showInfoStop">
     <!-- 从 button 开始防止事件冒泡 -->
     <button @click.stop.prevent="showInfoStop">阻止事件冒泡</button>
   </div>
+
   <!-- #3. 事件只触发一次 -->
   <button @click.once="showInfoOnce">只触发一次</button>
 
-  <!-- #4. 事件捕获模式处理事件 -->
+  <!-- #4. 事件捕获模式 (从外到内触发事件, 与冒泡相反) 处理事件 -->
   <div class="demo1" id="divOuter" @click.capture="showInfoCapture1(1)">
     <div class="demo2" id="divInner" @click.capture="showInfoCapture2(2)"></div>
   </div>
+
   <!-- #5. self 阻止冒泡: 只有事件的源对象是自己时才会触发 -->
   <div class="demo1" id="div_capture" @click.self="showInfoSelf">
     <button @click="showInfoSelf">self 阻止冒泡</button>
   </div>
+
   <!-- #6. passive 执行默认事件行为不必等待回调函数返回 -->
   <!--    滚轮事件:   wheel  -->
   <!--    滚动条事件: scroll -->

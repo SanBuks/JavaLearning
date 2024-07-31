@@ -16,8 +16,9 @@
 
 </div>
 </body>
-<!-- window 管理函数 要用到 vm 实例写成箭头函数 -->
-<!-- vm 管理函数 写成一般函数, 如果写成箭头函数, vm的指针被吞则指向 window -->
+<!-- #1. 函数形式保证 this 指向 vm  -->
+<!-- 1) vm 管理函数写成一般函数, 保证 this 指向 vm 而不是 window -->
+<!-- 2) 不被 vm 管理函数 (setTimeout, ajax, promise) 写成箭头函数保证 this 指向空从而找到 vm -->
 <script type="text/javascript">
   new Vue({
     el: '#button_container',
@@ -28,14 +29,14 @@
       fullName: ''
     },
     // computed: {
-    // 不可以异步处理
+    // #2. 不可以异步处理
     //   fullName() {
     //     return this.firstName + this.secondName
     //   }
     // },
     watch: {
       firstName(newValue) {
-        // 可以异步处理
+        // #3. 可以异步处理, 此处 ()=>{} 保证 this 指向 vm
         setTimeout(()=>{
           console.log(this) // this 是 vm
           this.fullName = newValue + '-' + this.secondName;
@@ -52,9 +53,10 @@
     }
   });
 
+// #4. 用法
 // 用计算：当需要通过某个属性的值来计算得到一个新的值时，应该使用计算属性。计算属性会缓存其依赖关系中所有响应式属性的值，并在相关依赖发生改变时重新求值。
 //        这样的优化可以避免不必要的计算开销，并提高代码的可读性和可维护性
-
 // 用监视：当需要在数据变化时执行异步或开销较大的操作时，应该使用监视。使用监视可以监听指定的数据变化，并在回调函数中执行相应的操作。
+
 </script>
 </html>

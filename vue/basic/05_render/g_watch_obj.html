@@ -8,40 +8,19 @@
 <body>
 
 <div id="con">
-  <div id="list">
-    <ul>
-      <button @click="changeData"> 更改 </button>
-      <li v-for="(item, index) in persons" :key="item.id">
-        {{item.name}} - {{item.age}} - {{index}}
-      </li>
-    </ul>
-    <hr/>
-  </div>
 </div>
 
 <script>
   let vm = new Vue({
     el: '#con',
+
+    // #1. _data 中 对 AAA, BBB 做数据代理
+    //     做 reactive_set 时调用模板解析
     data: {
-
-      AAA: "123",  // _data 中 对 AAA, BBB 做数据代理, 做 reactive_set 时调用模板解析
+      AAA: "123",
       BBB: "456",
-
-      persons: [
-        { id: '001', name: 'john', age: 16 },
-        { id: '002', name: 'zod', age: 14 },
-        { id: '003', name: 'ban', age: 13 },
-      ],
-    },
-    methods: {
-      changeData () {
-        // 1. vue 监测数据出现的问题
-        // this.persons[0].name = 'xxx'  // 奏效
-        this.person[0] = { id: '001', name: 'ppp', age: 16 } // 不奏效
-      },
     },
   })
-  // console.log(vm)
 
   let data_origin = {
     AAA: "123",
@@ -80,6 +59,7 @@
 
   // 2. Observer 创建代理对象的写法
   function proxy_type2() {
+
     function Observer(target) {
       let attribute_keys = Object.keys(target)
       attribute_keys.forEach((key_item)=>{
@@ -96,6 +76,7 @@
         })
       })
     }
+
     let observer = new Observer(data_origin)
     observer.AAA = 'xxx'
     console.log(data_origin.AAA)

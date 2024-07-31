@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>深度监视</title>
+</head>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<body>
+
+<div id="container">
+  <h1>数字是 {{number.a}}</h1>
+  <button @click="++number.a">a+1</button>
+  <button @click="++number.b">b+1</button>
+</div>
+</body>
+
+<script type="text/javascript">
+  new Vue({
+    el: '#container',
+    data: {
+      number: {
+        a: 1,
+        b: 2,
+      }
+    },
+    watch: {
+      // #1. 监视嵌套关系其中一个属性
+      'number.a': {
+        immediate: true,
+        handler(newValue, oldValue) {
+          console.log("a 被修改了", newValue, oldValue)
+        }
+      },
+      // #2. 深度监视对象, 此处 newValue 和 oldValue 返回的是对象引用, 而非值, 所以没有区别
+      //    如果你监听的数据是一个对象或数组类型，且deep选项设置为 true，
+      //    那么你需要确保在回调函数中使用了深拷贝的方式来获取数据, 否则你可能会得到一个引用类型的数据, 而不是一个值类型的数据
+      number: {
+        deep: true,
+        handler(newValue, oldValue) {
+          console.log("number 中任意数字被修改了", newValue, oldValue)
+          let anotherValue = JSON.parse(JSON.stringify(newValue))
+          console.log("copy value = ", anotherValue)
+        }
+      },
+
+      // #3. 简写形式
+      'number.b'(newValue, oldValue) {
+        console.log("b 被修改了", newValue, oldValue)
+      }
+    }
+  })
+
+  // #4. 简写形式
+  // vm.$watch('number.b', function(newValue, oldValue){
+  //   console.log("b 被修改了", newValue, oldValue)
+  // })
+</script>
+</html>

@@ -13,8 +13,8 @@
   let obj = {
     name: 'txt'
   }
-  // #1. Vue 对象中 _data 数据劫持了 data 实现响应式
-  // #2. Vue 为了开发方便 将 _data 中的属性通过代理的方式直接在 Vue 实例中访问
+  // #1. Vue 对象中 _data [数据劫持]了 data 实现响应式
+  // #2. Vue 为了开发方便 将 _data 中的属性通过[代理]的方式直接在 Vue 实例中访问
   const vm = new Vue({
     el: '#root',
     data: obj

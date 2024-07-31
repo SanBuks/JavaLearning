@@ -24,7 +24,8 @@
     },
     methods: {                          // #3. methods 不做数据劫持和代理
       showInfo1(event) {
-        console.log(this);              // #4. this 是 VM, 如果是箭头函数则是 Window
+        console.log(this);              // #4. 一般函数: this 是 VM
+                                        //     箭头函数: this 是 Window (错误)
         console.log(this.name)          //     一定要用 this 访问 data 成员
         alert(event.target.innerHTML);  // #5. event 可以获取事件发生对象
       },

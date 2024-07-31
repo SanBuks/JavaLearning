@@ -10,17 +10,17 @@
 <div id="root">
   <h1>{{name}}</h1>
 
-  <!-- 1. 常用按键快捷方式 keyup/keydown.*
-    回车 => enter
-    删除 => delete
-    退出 => esc
-    空格 => space
-    换行 => tab
-    上 => up 下 => down 左 => left 右 => right
+  <!-- #1. 常用按键快捷方式 keyup/keydown.*
+           回车 => enter
+           删除 => delete
+           退出 => esc
+           空格 => space
+           换行 => tab
+           上 => up 下 => down 左 => left 右 => right
   -->
-  <!-- 2. 特殊, 可以配合 event.key, event.keyCode, 或者 kebab-case（短横线命名）的 key 值使用-->
-  <!-- 3. 系统修饰符: ctrl, alt, shift, meta 用 keydown (keyup 可能会失去控件焦点) -->
-  <!-- 4. 按键可以组合 -->
+  <!-- #2. 特殊, 可以配合 event.key, event.keyCode, 或者 kebab-case（短横线命名）的 key 值使用-->
+  <!-- #3. 系统修饰符: ctrl, alt, shift, meta 用 keydown (keyup 可能会失去控件焦点) -->
+  <!-- #4. 按键可以组合 -->
 
   <input type="number" id="input1" placeholder="快捷方式" @keyup.enter="enterShowInfo"/>
   <input type="number" id="input2" placeholder="一般方式" @keyup="generalShowInfo"/>
@@ -37,17 +37,21 @@
     },
     methods: {
       enterShowInfo(event) {
+        console.log(event)
         console.log(event.target.value)
       },
       generalShowInfo(event) {
+        console.log(event)
         if (event.key === 'Shift') {
           console.log(event.target.value)
         }
       },
       capsLockShowInfo(event) {
+        console.log(event)
         console.log(event.target.value)
       },
       compositeShowInfo(event) {
+        console.log(event)
         console.log(event.target.value)
       },
     },

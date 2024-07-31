@@ -14,7 +14,7 @@
     <button @click="sortType = 2">Name排序</button>
     <button @click="sortType = 3">Age排序</button>
     <ul>
-      <li v-for="(item, index) in processedPersons" :key="item.id">
+      <li v-for="(item, index) in resultPeople" :key="item.id">
         {{item.name}} - {{item.age}} - {{index}}
       </li>
     </ul>
@@ -26,21 +26,22 @@
   new Vue({
     el: '#con',
     data: {
-      persons: [
-        { id: '001', name: 'john', age: 16 },
-        { id: '002', name: 'zod', age: 14 },
-        { id: '003', name: 'ban', age: 13 },
+      people: [
+        {id: '001', name: 'john', age: 16},
+        {id: '002', name: 'zod', age: 14},
+        {id: '003', name: 'ban', age: 13},
       ],
       keyWord: '',
       sortType: 0,  // 0-id, 1-name, 2-age
     },
     computed: {
-      processedPersons() {
-        // 先
-        let filterPersons = this.persons.filter((item) => {
+      resultPeople() {
+        // 先过滤
+        let filterPeople = this.people.filter((item) => {
           return item.name.indexOf(this.keyWord) !== -1
         })
-        return filterPersons.sort((lhs, rhs)=>{
+        // 再排序
+        return filterPeople.sort((lhs, rhs) => {
           if (this.sortType === 1) {
             return lhs.id - rhs.id
           } else if (this.sortType === 2) {

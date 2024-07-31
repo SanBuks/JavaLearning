@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>列表过滤</title>
+  <script src="../../js/vue.js"></script>
+</head>
+<body>
+
+<div id="con">
+  <div id="list">
+    过滤字符
+    <input type="text" v-model="filter_key"/>
+
+    <ul>
+      <!-- #1. watch 列表过滤(需要额外存储过滤结果) -->
+      <li v-for="(item, index) in filter_result01" :key="item.id">
+        {{item.name}} - {{item.age}} - {{index}}
+      </li>
+    </ul>
+
+    <ul>
+      <!-- #2. calc 列表过滤 -->
+      <li v-for="(item, index) in filter_result02" :key="item.id">
+        {{item.name}} - {{item.age}} - {{index}}
+      </li>
+    </ul>
+    <hr/>
+  </div>
+</div>
+
+<script>
+  new Vue({
+    el: '#con',
+    data: {
+      filter_key: '',
+      filter_persons: [
+        { id: '001', name: 'john', age: 13 },
+        { id: '002', name: 'tod', age: 14 },
+        { id: '003', name: 'jan', age: 15 },
+      ],
+      filter_result01: []
+    },
+    methods: { },
+    watch: {
+      filter_key: {
+        immediate: true,
+        handler(newValue, oldValue) {
+          this.filter_result01 =
+            this.filter_persons.filter((p) => {
+              return p.name.indexOf(newValue) !== -1
+            })
+        },
+      },
+    },
+    computed: {
+      filter_result02() {
+        return this.filter_persons.filter((item) => {
+          return item.name.indexOf(this.filter_key) !== -1
+        })
+      }
+    }
+  })
+</script>
+</body>
+</html>

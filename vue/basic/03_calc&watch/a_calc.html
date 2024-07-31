@@ -11,9 +11,10 @@
   <h1>{{name}}</h1>
   姓：<input type="text" id="first_name" placeholder="请输入姓" v-model="firstName"/>
   名：<input type="text" id="second_name" placeholder="请输入名" v-model="secondName"/>
+  姓名: <input type="text" id="full_name" placeholder="请输入名" v-model="fullNameComputed"/>
   <br>
 
-  <!-- #1. 数据改变, 模板一定重新解析, 一定会重新调用函数, 存在性能损失 -->
+  <!-- #1. 数据改变, 模板重新解析, 一定会重新调用函数, 存在性能损失 -->
   姓名(调用函数)：<span>{{fullName()}}</span>
   <br>
 
@@ -43,19 +44,23 @@
     computed: {
       fullNameComputed: {
         get() {
-          // #3. 调用时机:
-          // 第一次调用: 调用并缓存
-          // 依赖数据改变: 调用并更新缓存
+          // #4. 调用时机:
+          //     第一次调用: 调用并缓存
+          //     依赖数据改变: 调用并更新缓存
           console.log("调用了get")
           return this.firstName + '-' + this.secondName
         },
         set(value) {
-          // 如果修改了 firstName 和 secondName 会同时调用 get 更新
-          console.log("调用了set")
+          console.log("调用了set, value=", value)
+          let arr = value.split('-')
+          this.firstName = arr[0]
+          this.secondName = arr[1]
+          // 之后, 如果修改了 firstName 和 secondName 会同时调用 get 更新
         }
       },
 
-      // #4. vue 的计算属性通过代理 computed 下对象的计算方法来实现
+      // #5. vue 的计算属性通过代理 computed 下对象的计算方法来实现
+      //     计算属性直接代理在 vue 下, _data 中没有
       // Object.defineProperty(vue, 'fullNameComputed', {
       //   get() {
       //     return computed.fullNameComputed.get()
@@ -65,7 +70,7 @@
       //   },
       // });
 
-      // #5. 简写形式
+      // #6. 简写形式
       simpleComputed() {
         return this.firstName + '-' + this.secondName
       }

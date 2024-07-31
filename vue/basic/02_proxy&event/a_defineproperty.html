@@ -30,7 +30,7 @@
   }
 
   // #2. 被代理的对象, 通过 Object defineProperty 设定动态属性
-  Object.defineProperty(obj, 'name', opt,)
+  Object.defineProperty(obj, 'name', opt)
   obj.name = 'txt-changed'
   console.log(txt)
   txt = 'txt-reset'      // 设置 name

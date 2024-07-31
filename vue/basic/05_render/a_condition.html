@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>条件渲染</title>
+  <script src="../../js/vue.js"></script>
+</head>
+<style>
+    .c1 {
+        background-color: skyblue;
+        height: 300px;
+        width: 200px;
+    }
+
+    .c2 {
+        background-color: yellowgreen;
+        height: 300px;
+        width: 200px;
+    }
+
+    .c3 {
+        background-color: rebeccapurple;
+        height: 300px;
+        width: 200px;
+    }
+</style>
+<body>
+
+<div id="con">
+  <!-- #1. v-show 条件渲染, 本质隐藏控件(display:none) -->
+  <div v-show="show" class="c1"></div>
+
+  <!-- #2. v-if 条件渲染, 结构中间不能有间断, 本质为移除控件 -->
+  <div v-if="n === 0" class="c1"></div>
+  <div v-else-if="n === 1" class="c2"></div>
+  <div v-else class="c3"></div>
+  <button @click="change">点我改变</button>
+  <hr/>
+
+  <!-- #3. 组合条件渲染 -->
+  <template v-if="n===1">
+    <h1>11111</h1>
+    <h1>11111</h1>
+    <h1>11111</h1>
+  </template>
+  <hr/>
+</div>
+
+<script>
+  new Vue({
+    el: '#con',
+    data: {
+      show: false,
+      n: 0,
+    },
+    methods: {
+      change() {
+        this.show = !this.show
+        this.n = (this.n + 1) % 3
+      },
+    },
+  })
+</script>
+</body>
+</html>
