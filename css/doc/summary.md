@@ -121,5 +121,24 @@
     - 如果子元素高度超父元素的行高, 可能会改变父元素的位置来达到对齐效果
     - 只修饰元素, 只修饰行内元素
     - 可以修饰表格中的 `<td>`
-- 列表:
-  -  
+- 列表
+  -  list-style-type: 序号类型
+  -  list-style-position: 序号位置
+  -  list-style-image: url("path") 序号图标
+- 边框
+  - border-width: 宽度
+  - border-color: 颜色
+  - border-style: 样式
+- 表格 
+  - table-layout: 是否平均
+  - border-spacing: 单元格间隔
+  - border-collapse: 是否合并单元格边框
+  - caption-side: 标题位置
+  - empty-cells: 是否隐藏空单元格
+- 背景
+  - background-color: 背景颜色
+  - background-image: 图片地址
+  - background-repeat: 是否重复, 重复方向
+  - background-position: 原点位置
+- 鼠标样式: `cursor: help`
+- em: 字体宽度的倍数
