@@ -5,10 +5,57 @@
     <title>GetParam</title>
     <style>
         a { display: block; }
+        form {
+            border: solid 1px black;
+        }
     </style>
 </head>
 <body>
 
+<a th:href="@{/param/servletapi(id='123', name='xyz')}"> ServletAPI 测试</a>
 
+<hr>
+<form th:action="@{/param/origin-name}" method="get">
+    用户名: <input type="text" name="name"><br>
+    爱好: <input type="checkbox" name="hobby" value="a">
+         <input type="checkbox" name="hobby" value="b">
+         <input type="checkbox" name="hobby" value="c"><br>
+    提交 <input type="submit" value="参数获取测试">
+</form>
+
+<hr>
+<form th:action="@{/param/default-value}" method="get">
+    用户名: <input type="text" name="username"><br>
+    爱好: <input type="checkbox" name="hobby" value="a">
+         <input type="checkbox" name="hobby" value="b">
+         <input type="checkbox" name="hobby" value="c"><br>
+    提交 <input type="submit" value="默认参数获取测试">
+</form>
+
+<hr>
+<a th:href="@{/param/header-value}">请求头参数获取测试</a>
+
+<hr>
+<a th:href="@{/param/cookie-value}">Cookie获取测试</a>
+
+<hr>
+<form th:action="@{/param/pojo-post}" method="post">
+    用户名：<input type="text" name="username"><br>
+    密码：<input type="password" name="password"><br>
+    性别：<input type="radio" name="sex" value="男">男<input type="radio" name="sex" value="女">女<br>
+    年龄：<input type="text" name="age"><br>
+    邮箱：<input type="text" name="email"><br>
+    <input type="submit" value="实体类 Post 提交">
+</form>
+
+<hr>
+<form th:action="@{/param/pojo-get}" method="get">
+    用户名: <input type="text" name="username"><br>
+    密码: <input type="password" name="password"><br>
+    性别: <input type="radio" name="sex" value="男">男<input type="radio" name="sex" value="女">女<br>
+    年龄: <input type="text" name="age"><br>
+    邮箱: <input type="text" name="email"><br>
+    <input type="submit" value="实体类 Get 提交">
+</form>
 </body>
 </html>

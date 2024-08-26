@@ -25,7 +25,6 @@ src
   │  └─webapp            (Web Resource Directory)
   │      └─WEB-INF
   │              web.xml (Web Module Deployment Descriptor)
-  │
   └─test
       ├─java
       └─resources
@@ -37,6 +36,7 @@ src
 - 配置 Tomcat
   - Application Server: Tomcat
   - On Update Action: Redeploy
+  - VM options: -Dfile.encoding=UTF-8
   - On Frame deactivation: Update classes and resource
   - Deployment: Application Context & xxx:war exploded
 - th:href="@{/target}" 指定跳转路径
@@ -50,11 +50,19 @@ src
 - request-mapping 派生类
 - 参数(判断)匹配, 请求头匹配
 - ant风格: 
-  - ？：表示任意的单个字符
-  - *：表示任意的0个或多个字符
-  - **：表示任意的一层或多层目录
-  - 注意：在使用时，只能使用//xxx的方式
+  - ?: 表示任意的单个字符
+  - *: 表示任意的0个或多个字符
+  - **: 表示任意的一层或多层目录
+  - 注意: 在使用时，只能使用//xxx的方式
 - 占位参数匹配
 
 ## 3. get-parameter
-- 
+- ServletApi 获取参数
+- @RequestParam
+- @RequestHeader
+- @CookieValue
+- 实体类 Get
+- 实体类 Post
+- 解决中文乱码: 
+  - Get 乱码: tomcat/conf/server.xml 配置解码方式: `<Connector ... URIEncoding="UTF-8" />`
+  - Post 乱码: web.xml 配置 CharacterEncodingFilter 过滤器处理 
