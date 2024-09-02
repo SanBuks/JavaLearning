@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Interceptor And Ex-Resolver</title>
+    <style>
+        a { display: block; }
+        form {
+            padding: 10px;
+            border: solid 1px black;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<a th:href="@{/interceptor}"> 测试拦截器 </a>
+<a th:href="@{/ex}"> 测试异常处理 </a>
+</body>
+</html>

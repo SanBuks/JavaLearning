@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="org.learn.java.springmvc.*"/>
+
+    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="order" value="1"/>
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="templateEngine">
+            <bean class="org.thymeleaf.spring5.SpringTemplateEngine">
+                <property name="templateResolver">
+                    <bean class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+                        <property name="prefix" value="/WEB-INF/templates/"/>
+                        <property name="suffix" value=".html"/>
+                        <property name="templateMode" value="HTML5"/>
+                        <property name="characterEncoding" value="UTF-8"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <mvc:view-controller path="/" view-name="index"/>
+    <mvc:default-servlet-handler/>
+    <mvc:annotation-driven />
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+
+    <mvc:interceptors>
+        <!-- #1. bean 配置全局拦截器 -->
+<!--        <bean class="org.learn.java.springmvc.interceptor.FirstInterceptor"/>-->
+        <!-- #2. component 配置全局拦截器 -->
+<!--        <ref bean="firstInterceptor" />-->
+        <!-- #3. interceptor + component 配置指定路径拦截器 -->
+        <mvc:interceptor>
+            <!--  3.1 拦截一层  -->
+  <!-- <mvc:mapping path="/*"/>-->
+            <!--  3.2 拦截所有  -->
+            <mvc:mapping path="/**"/>
+            <!--  3.3 排除拦截路径  -->
+            <mvc:exclude-mapping path="/interceptor"/>
+            <mvc:exclude-mapping path="/ex"/>
+            <ref bean="firstInterceptor"/>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/interceptor"/>
+            <mvc:exclude-mapping path="/ex"/>
+            <ref bean="secondInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <!-- 4. 配置统一异常处理 -->
+<!--    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
+        <!-- 4.1 配置视图 -->
+<!--        <property name="exceptionMappings">-->
+<!--            <props>-->
+<!--                <prop key="java.lang.RuntimeException">error</prop>-->
+<!--            </props>-->
+<!--        </property>-->
+        <!-- 4.2 配置请求域的值为 ex -->
+<!--        <property name="exceptionAttribute" value="ex"/>-->
+<!--    </bean>-->
+</beans>

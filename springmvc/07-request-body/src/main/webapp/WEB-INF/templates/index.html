@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Request-Response</title>
+    <script type="text/javascript" th:src="@{/static/js/vue.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/axios.min.js}"></script>
+    <style>
+        a { display: block; }
+        form {
+            padding: 10px;
+            border: solid 1px black;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<form th:action="@{/request-body}" method="post">
+    <h5>测试 @request-body </h5>
+    姓名: <input type="text" name="username"/><br>
+    密码: <input type="password" name="password"/><br>
+    性别: <input type="radio" name="sex" value="0" /> 男
+         <input type="radio" name="sex" value="1" /> 女 <br>
+    年龄: <input type="number" name="age"/><br>
+    邮箱: <input type="text" name="email"/><br>
+    爱好: <input type="checkbox" name="hobby" value="看书">看书
+         <input type="checkbox" name="hobby" value="写字">写字
+         <input type="checkbox" name="hobby" value="画画">画画<br>
+    <input type="submit" value="request-body 测试"/>
+</form>
+<hr>
+
+<form th:action="@{/request-entity}" method="post">
+    <h5>测试 @request-entity</h5>
+    姓名: <input type="text" name="username"/><br>
+    密码: <input type="password" name="password"/><br>
+    性别: <input type="radio" name="sex" value="0" /> 男
+         <input type="radio" name="sex" value="1" /> 女 <br>
+    年龄: <input type="number" name="age"/><br>
+    邮箱: <input type="text" name="email"/><br>
+    爱好: <input type="checkbox" name="hobby" value="看书">看书
+         <input type="checkbox" name="hobby" value="写字">写字
+         <input type="checkbox" name="hobby" value="画画">画画<br>
+         <input type="submit" value="request-entity 测试"/>
+</form>
+<hr>
+
+<a th:href="@{/servlet-response-body}"> 测试 ServletHttpResponse </a>
+<hr>
+
+<a th:href="@{/response-body}"> 测试 @ResponseBody </a>
+<hr>
+
+<a th:href="@{/response-json}"> 测试 jackson-databind HttpMessageConverter </a>
+<hr>
+
+<div id="app">
+    <a @click.prevent="testAjax" th:href="@{/response-ajax}"> 测试 AJAX </a>
+</div>
+<hr>
+
+<a th:href="@{/download}"> 测试下载文件 </a>
+<hr>
+
+<!--#1. 上传组合一定是 post + multipart/form-data -->
+<form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+    文件: <input type="file" name="photo"/> <br>
+         <input type="submit" value="上传"/>
+</form>
+<hr>
+
+
+<script>
+    new Vue({
+        el: "#app",
+        methods: {
+            testAjax(event) {
+                axios({
+                    method: "post",
+                    url: event.target.href,
+                    params: {
+                        username: "admin",
+                        password: "123456",
+                    }
+                }).then(res=> {
+                    alert(JSON.stringify(res.data))
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

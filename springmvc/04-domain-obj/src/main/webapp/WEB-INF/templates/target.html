@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Target</title>
+</head>
+<body>
+
+<h1> Success </h1>
+
+<!--#1. 获取请求域对象 -->
+<p th:text="${requestDomain}"></p>
+
+<!--#2. 获取会话域对象 -->
+<p th:text="${session.sessionDomain}"></p>
+
+<!--#3. 获取应用域对象 -->
+<p th:text="${application.contextDomain}"></p>
+</body>
+</html>

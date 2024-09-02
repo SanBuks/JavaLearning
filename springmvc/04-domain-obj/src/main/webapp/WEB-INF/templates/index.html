@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Domain-Obj</title>
+    <style>
+        a { display: block; }
+        form {
+            border: solid 1px black;
+        }
+    </style>
+</head>
+<body>
+
+<a th:href="@{/request-domain/servletapi}"> ServletAPI Request Domain 测试</a>
+<hr>
+
+<a th:href="@{/request-domain/modelandview}"> ModelAndView Request Domain 测试</a>
+<hr>
+
+<a th:href="@{/request-domain/model}"> Model Request Domain 测试</a>
+<hr>
+
+<a th:href="@{/request-domain/map}"> Map Request Domain 测试</a>
+<hr>
+
+<a th:href="@{/request-domain/modelmap}"> ModelMap Request Domain 测试</a>
+<hr>
+
+<a th:href="@{/session-domain/httpsession}"> HttpSession Session Domain 测试</a>
+<hr>
+
+<a th:href="@{/context-domain/httpsession}"> HttpSession Context Domain 测试</a>
+<hr>
+</body>
+</html>

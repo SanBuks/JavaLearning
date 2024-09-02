@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <style>
+        a { display: block; }
+        form {
+            border: solid 1px black;
+        }
+    </style>
+</head>
+<body>
+
+<a th:href="@{/user/1}"> User Get 测试</a>
+<hr>
+
+
+<form th:action="@{/user}" method="post">
+    用户名: <input type="text" name="username"><br>
+    爱好: <input type="checkbox" name="hobby" value="a">
+    <input type="checkbox" name="hobby" value="b">
+    <input type="checkbox" name="hobby" value="c"><br>
+    <input type="submit" value="User Post 测试">
+</form>
+<hr>
+
+<form th:action="@{/user}" method="post">
+    <input type="text" hidden name="_method" value="put">
+    用户名: <input type="text" name="username"><br>
+    爱好: <input type="checkbox" name="hobby" value="a">
+    <input type="checkbox" name="hobby" value="b">
+    <input type="checkbox" name="hobby" value="c"><br>
+    <input type="submit" value="User Put 测试">
+</form>
+<hr>
+
+<form th:action="@{/user/1}" method="post">
+    <input type="text" hidden name="_method" value="delete">
+    <input type="submit" value="User Delete 测试">
+</form>
+<hr>
+
+</body>
+</html>

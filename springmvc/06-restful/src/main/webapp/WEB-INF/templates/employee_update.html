@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee</title>
+    <style>
+        a { display: block; }
+
+        table {
+            border: black 1px solid;
+            table-layout: fixed;
+            border-spacing: 2px;
+            border-collapse: collapse;
+            caption-side: top;
+            text-align: center;
+        }
+
+        a { display: inline-block; }
+
+        tr,
+        th,
+        td {
+            border: black 1px solid;
+        }
+
+    </style>
+</head>
+<body>
+
+<form th:action="@{/employee}" method="post">
+    <input type="hidden" name="_method" value="put"/>
+    <input type="hidden" name="id" th:value="${employee.id}"/>
+    lastName:<input type="text" name="lastName" th:value="${employee.lastName}"><br>
+    email:<input type="text" name="email" th:value="${employee.email}"><br>
+    gender:<input type="radio" name="gender" value="1" th:field="${employee.gender}">male
+           <input type="radio" name="gender" value="0" th:field="${employee.gender}">female
+           <br>
+    <input type="submit" value="update"><br>
+</form>
+
+</body>
+</html>
